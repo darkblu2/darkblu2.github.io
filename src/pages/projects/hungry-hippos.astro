@@ -1,0 +1,705 @@
+---
+import ProjectCaseLayout from '../../components/ProjectCaseLayout.astro';
+import CaseStudyTOC from '../../components/CaseStudyTOC.astro';
+import { projects } from '../../data/site';
+
+const project = projects.find(
+  (project) => project.slug === 'hungry-hippos'
+);
+
+if (!project) {
+  throw new Error('HungryHippos project not found');
+}
+
+const toc = [
+  { id: 'overview', label: 'Overview' },
+  { id: 'gameplay', label: 'How It Works' },
+  { id: 'implementation', label: 'Implementation' },
+  { id: 'challenges', label: 'Engineering Challenges' },
+  { id: 'hardware', label: 'Hardware' },
+  { id: 'skills', label: 'Engineering Skills' },
+];
+---
+
+<ProjectCaseLayout
+  title={project.title}
+  description={project.description}
+  number={project.number}
+  year={project.year}
+  status={project.status}
+  tagline={project.tagline}
+  image={project.image}
+  tags={project.tags}
+>
+
+  <!-- SIDEBAR -->
+
+  <div slot="sidebar">
+    <CaseStudyTOC items={toc} />
+  </div>
+
+
+  <!-- OVERVIEW -->
+
+  <section id="overview">
+
+    <p class="eyebrow">overview</p>
+
+    <p class="big-copy">
+        HungryHippos is an embedded C++ game running entirely on an
+        LPC1768 microcontroller, combining player input, game-state logic,
+        collision detection, and sprite-based graphics on a uLCD display.
+    </p>
+
+    <p>
+        The player moves a character around the screen collecting fruit
+        while avoiding enemies. Rather than running on a desktop computer,
+        the game logic and display control execute directly on the
+        microcontroller, making the project an exercise in both software
+        design and embedded hardware integration.
+    </p>
+
+<section id="gameplay">
+
+  <p class="eyebrow">how it works</p>
+
+  <h2>
+    A continuous game loop updates input, objects, interactions,
+    and the display.
+  </h2>
+
+  <p>
+    During gameplay, the microcontroller repeatedly reads the current
+    player input, updates the position of game objects, checks whether
+    objects have interacted, updates the game state, and redraws the
+    screen.
+  </p>
+
+  <div class="architecture-flow">
+
+    <div>
+      <span>01</span>
+      <strong>Read Input</strong>
+      <p>Determine the player's requested movement.</p>
+    </div>
+
+    <span>→</span>
+
+    <div>
+      <span>02</span>
+      <strong>Update State</strong>
+      <p>Move the player and update game objects.</p>
+    </div>
+
+    <span>→</span>
+
+    <div>
+      <span>03</span>
+      <strong>Check Interactions</strong>
+      <p>Determine whether fruit or enemies were encountered.</p>
+    </div>
+
+    <span>→</span>
+
+    <div>
+      <span>04</span>
+      <strong>Render</strong>
+      <p>Draw the resulting state to the uLCD.</p>
+    </div>
+
+  </div>
+
+</section>
+
+  <!-- IMPLEMENTATION -->
+
+  <section id="implementation">
+
+  <p class="eyebrow">implementation</p>
+
+  <h2>
+    Structuring game entities as reusable C++ objects.
+  </h2>
+
+  <p>
+    The game used C++ classes to represent different types of objects.
+    Shared behavior could be placed in parent classes while individual
+    objects defined properties specific to themselves, such as their
+    appearance and scoring behavior.
+  </p>
+
+  <p>
+    For example, a fruit object stores its sprite as pixel data and
+    draws that sprite at its current coordinates on the uLCD. This
+    connected an object's internal state directly to what appeared
+    on the physical display.
+  </p>
+
+
+  <div class="code-block">
+
+    <div class="code-head">
+      <span>simplified object structure</span>
+      <span>C++</span>
+    </div>
+
+    <pre><code>{`class Collectible : public Fruit {
+public:
+    Collectible() {
+        scoreValue = 1;
+    }
+
+    void draw() {
+        display.blit(
+            x,
+            y,
+            width,
+            height,
+            sprite
+        );
+    }
+};`}</code></pre>
+
+  </div>
+
+  <p class="code-note">
+    Simplified representation of the implementation structure.
+  </p>
+
+
+  <div class="skill-grid">
+
+    <div>
+      <span class="num">01</span>
+      <strong>Inheritance</strong>
+      <p>
+        Shared game-object behavior could be reused rather than
+        duplicated between individual objects.
+      </p>
+    </div>
+
+    <div>
+      <span class="num">02</span>
+      <strong>Sprite Data</strong>
+      <p>
+        Graphics were represented as arrays of pixel-color values
+        stored in program memory.
+      </p>
+    </div>
+
+    <div>
+      <span class="num">03</span>
+      <strong>Object State</strong>
+      <p>
+        Position and object properties determined how each entity
+        behaved during gameplay.
+      </p>
+    </div>
+
+    <div>
+      <span class="num">04</span>
+      <strong>Embedded Rendering</strong>
+      <p>
+        Object state was translated into graphics rendered directly
+        to the uLCD.
+      </p>
+    </div>
+
+  </div>
+
+</section>
+
+<section id="challenges">
+
+  <p class="eyebrow">engineering challenges</p>
+
+  <h2>
+    Keeping software state and the physical display synchronized.
+  </h2>
+
+  <div class="challenge-list">
+
+    <div>
+
+      <span>01</span>
+
+      <div>
+        <strong>Managing multiple game objects</strong>
+
+        <p>
+          Player, fruit, and enemy objects each needed independent
+          position and behavior while still participating in the same
+          game loop.
+        </p>
+
+        <p class="solution">
+          <b>Approach:</b> organize entities as reusable C++ objects
+          with common behavior separated from object-specific properties.
+        </p>
+      </div>
+
+    </div>
+
+
+    <div>
+
+      <span>02</span>
+
+      <div>
+        <strong>Rendering graphics on embedded hardware</strong>
+
+        <p>
+          Updating the game state alone was not enough—the corresponding
+          sprite also had to be drawn at the correct screen coordinates.
+        </p>
+
+        <p class="solution">
+          <b>Approach:</b> associate rendering behavior with each object's
+          current state so display updates followed software updates.
+        </p>
+      </div>
+
+    </div>
+
+
+    <div>
+
+      <span>03</span>
+
+      <div>
+        <strong>Coordinating continuous gameplay</strong>
+
+        <p>
+          Input, movement, interactions, and graphics all needed to be
+          evaluated repeatedly without one part of the application
+          becoming disconnected from another.
+        </p>
+
+        <p class="solution">
+          <b>Approach:</b> structure the application around a repeated
+          update cycle: input → state → interaction → render.
+        </p>
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+  <!-- HARDWARE -->
+
+  <section id="hardware">
+
+  <p class="eyebrow">hardware integration</p>
+
+  <h2>
+    Software executing directly on an embedded platform.
+  </h2>
+
+  <div class="hardware-grid">
+
+    <div>
+      <span>controller</span>
+      <strong>mbed LPC1768</strong>
+    </div>
+
+    <div>
+      <span>display</span>
+      <strong>uLCD-144-G2</strong>
+    </div>
+
+    <div>
+      <span>language</span>
+      <strong>C++</strong>
+    </div>
+
+  </div>
+
+  <p>
+    The LPC1768 executed the game logic while the uLCD acted as the
+    graphical interface. The project therefore required the application
+    code to interact directly with external hardware rather than treating
+    graphics and input as operating-system services.
+  </p>
+
+</section>
+
+
+  <!-- SKILLS -->
+
+ <section id="skills">
+
+  <p class="eyebrow">engineering skills developed</p>
+
+  <div class="engineering-list">
+
+    <div>
+      <span>01</span>
+      <p>
+        <strong>Embedded C++</strong> — developing an interactive
+        application for a microcontroller.
+      </p>
+    </div>
+
+    <div>
+      <span>02</span>
+      <p>
+        <strong>Object-oriented design</strong> — using classes and
+        inheritance to organize reusable game entities.
+      </p>
+    </div>
+
+    <div>
+      <span>03</span>
+      <p>
+        <strong>Graphics programming</strong> — representing sprites
+        as pixel data and rendering them to an embedded display.
+      </p>
+    </div>
+
+    <div>
+      <span>04</span>
+      <p>
+        <strong>State management</strong> — coordinating movement,
+        interactions, scoring, and graphics inside a continuous loop.
+      </p>
+    </div>
+
+    <div>
+      <span>05</span>
+      <p>
+        <strong>Hardware/software integration</strong> — connecting
+        application behavior to a physical microcontroller and display.
+      </p>
+    </div>
+
+  </div>
+
+</section>
+
+</ProjectCaseLayout>
+
+
+<style>
+
+  section {
+    scroll-margin-top: 110px;
+
+    padding: 0 0 52px;
+    margin: 0 0 52px;
+
+    border-bottom: 1px solid var(--line);
+  }
+
+  section:last-child {
+    margin-bottom: 0;
+    border-bottom: 0;
+  }
+
+  section > .eyebrow {
+    margin: 0 0 16px;
+  }
+
+  section p {
+    max-width: 740px;
+
+    color: #3d3e39;
+
+    font-size: 1.02rem;
+    line-height: 1.6;
+  }
+
+  .big-copy {
+    margin-top: 0;
+
+    color: var(--text);
+
+    font-size: clamp(1.3rem, 2.2vw, 1.8rem);
+    line-height: 1.4;
+  }
+
+  h2 {
+    max-width: 760px;
+
+    margin: 0 0 24px;
+
+    font-size: clamp(1.8rem, 3.4vw, 3.2rem);
+    line-height: 1.04;
+    letter-spacing: -0.04em;
+
+    font-weight: 580;
+  }
+
+
+  /* ARCHITECTURE */
+
+  .architecture-flow {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    auto
+    minmax(0, 1fr)
+    auto
+    minmax(0, 1fr)
+    auto
+    minmax(0, 1fr);
+
+  align-items: stretch;
+
+  gap: 12px;
+
+  margin-top: 30px;
+}
+
+.architecture-flow > div {
+  padding: 18px;
+
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+
+.architecture-flow > span {
+  align-self: center;
+
+  color: var(--muted);
+}
+
+.architecture-flow div > span {
+  display: block;
+
+  margin-bottom: 20px;
+
+  color: var(--accent);
+  font-size: 0.72rem;
+}
+
+.architecture-flow strong {
+  display: block;
+
+  margin-bottom: 8px;
+}
+
+.architecture-flow p {
+  margin: 0;
+
+  font-size: 0.88rem;
+}
+
+/* CHALLENGES */
+
+.challenge-list {
+  margin-top: 30px;
+
+  border-top: 1px solid var(--line);
+}
+
+.challenge-list > div {
+  display: grid;
+  grid-template-columns: 48px 1fr;
+
+  gap: 10px;
+
+  padding: 22px 0;
+
+  border-bottom: 1px solid var(--line);
+}
+
+.challenge-list > div > span {
+  color: var(--accent);
+
+  font-size: 0.72rem;
+}
+
+.challenge-list strong {
+  display: block;
+
+  margin-bottom: 8px;
+
+  font-size: 1.05rem;
+}
+
+.challenge-list p {
+  margin: 0 0 8px;
+
+  font-size: 0.94rem;
+}
+
+.challenge-list .solution {
+  margin-bottom: 0;
+
+  color: var(--muted);
+}
+
+  /* CODE */
+
+  .code-block {
+    margin: 30px 0 10px;
+
+    overflow: hidden;
+
+    background: #11120f;
+    border: 1px solid #11120f;
+  }
+
+  .code-head {
+    display: flex;
+    justify-content: space-between;
+
+    padding: 10px 16px;
+
+    border-bottom: 1px solid #353630;
+
+    color: #a8a9a3;
+
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
+    text-transform: lowercase;
+  }
+
+  .code-block pre {
+    margin: 0;
+    padding: 22px;
+
+    overflow-x: auto;
+  }
+
+  .code-block code {
+    color: #f2f1ed;
+
+    font-family:
+      "SFMono-Regular",
+      Consolas,
+      "Liberation Mono",
+      monospace;
+
+    font-size: 0.84rem;
+    line-height: 1.65;
+  }
+
+  .code-note {
+    margin: 0 0 30px;
+
+    color: var(--muted);
+
+    font-size: 0.78rem;
+
+    font-style: italic;
+  }
+
+
+  /* IMPLEMENTATION SKILLS */
+
+  .skill-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    gap: 10px;
+  }
+
+  .skill-grid > div {
+    padding: 18px;
+
+    border: 1px solid var(--line);
+  }
+
+  .skill-grid .num {
+    display: block;
+
+    margin-bottom: 20px;
+
+    color: var(--accent);
+
+    font-size: 0.7rem;
+  }
+
+  .skill-grid strong {
+    display: block;
+
+    margin-bottom: 7px;
+  }
+
+  .skill-grid p {
+    margin: 0;
+
+    font-size: 0.88rem;
+  }
+
+
+  /* HARDWARE */
+
+  .hardware-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 10px;
+
+    margin: 28px 0;
+  }
+
+  .hardware-grid > div {
+    padding: 18px;
+
+    border: 1px solid var(--line);
+  }
+
+  .hardware-grid span {
+    display: block;
+
+    margin-bottom: 18px;
+
+    color: var(--muted);
+
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    text-transform: lowercase;
+  }
+
+
+  /* ENGINEERING SKILLS */
+
+  .engineering-list {
+    border-top: 1px solid var(--line);
+  }
+
+  .engineering-list > div {
+    display: grid;
+    grid-template-columns: 46px 1fr;
+
+    padding: 15px 0;
+
+    border-bottom: 1px solid var(--line);
+  }
+
+  .engineering-list span {
+    color: var(--muted);
+
+    font-size: 0.72rem;
+  }
+
+  .engineering-list p {
+    margin: 0;
+
+    font-size: 0.98rem;
+  }
+
+
+  @media (max-width: 760px) {
+
+    .architecture-flow {
+      grid-template-columns: 1fr;
+    }
+
+    .architecture-flow > span {
+      display: none;
+    }
+
+    .skill-grid,
+    .hardware-grid {
+      grid-template-columns: 1fr;
+    }
+
+  }
+
+</style>

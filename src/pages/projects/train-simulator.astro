@@ -1,0 +1,361 @@
+---
+import ProjectCaseLayout from '../../components/ProjectCaseLayout.astro';
+import CaseStudyTOC from '../../components/CaseStudyTOC.astro';
+import { projects } from '../../data/site';
+
+const project = projects.find(
+  (project) => project.slug === 'train-simulator'
+);
+
+if (!project) {
+  throw new Error('Train Simulator project not found');
+}
+
+const toc = [
+  { id: 'overview', label: 'Overview' },
+  { id: 'challenge', label: 'The Challenge' },
+  { id: 'architecture', label: 'System Architecture' },
+  { id: 'state-machine', label: 'State Machine' },
+  { id: 'implementation', label: 'VHDL Implementation' },
+  { id: 'hardware', label: 'FPGA Hardware' },
+  { id: 'skills', label: 'Engineering Skills' },
+];
+---
+
+<ProjectCaseLayout
+  title={project.title}
+  description={project.description}
+  number={project.number}
+  year={project.year}
+  status={project.status}
+  tagline={project.tagline}
+  image={project.image}
+  tags={project.tags}
+>
+
+  <div slot="sidebar" class="project-links">
+
+    <CaseStudyTOC items={toc} />
+
+  </div>
+
+
+  <!-- OVERVIEW -->
+
+  <section id="overview">
+
+    <p class="eyebrow">overview</p>
+
+    <p class="big-copy">
+      A VHDL-based digital control system for coordinating two trains
+      operating simultaneously on a model track network.
+    </p>
+
+    <p>
+      Track sensors provided information about each train's position,
+      while switches controlled the available routes. The controller
+      used this information to determine train movement and switch
+      states while coordinating both trains within the same system.
+    </p>
+
+  </section>
+
+
+  <!-- CHALLENGE -->
+
+  <section id="challenge">
+
+    <p class="eyebrow">the challenge</p>
+
+    <h2>
+      Coordinating two trains moving through shared track resources.
+    </h2>
+
+    <p>
+      The controller needed to react to sensor inputs, determine where
+      each train was located, and set the appropriate track switches
+      while both trains were operating simultaneously.
+    </p>
+
+    <p>
+      This required translating the physical behavior of the train
+      system into deterministic digital logic with clearly defined
+      states, transitions, inputs, and outputs.
+    </p>
+
+  </section>
+
+
+  <!-- SYSTEM ARCHITECTURE -->
+
+  <section id="architecture">
+
+    <p class="eyebrow">system architecture</p>
+
+    <h2>
+      Sensors provide position information; control logic determines
+      movement and switching.
+    </h2>
+
+    <div class="flow">
+
+      <div class="flow-box">
+        <span>01</span>
+        <strong>Track sensors detect train position</strong>
+      </div>
+
+      <div class="flow-arrow">↓</div>
+
+      <div class="flow-box">
+        <span>02</span>
+        <strong>VHDL controller evaluates the current state</strong>
+      </div>
+
+      <div class="flow-arrow">↓</div>
+
+      <div class="flow-box">
+        <span>03</span>
+        <strong>State-machine logic determines the next state</strong>
+      </div>
+
+      <div class="flow-arrow">↓</div>
+
+      <div class="flow-box">
+        <span>04</span>
+        <strong>Train and switch-control outputs are updated</strong>
+      </div>
+
+      <div class="flow-arrow">↓</div>
+
+      <div class="flow-box">
+        <span>05</span>
+        <strong>New sensor inputs repeat the control cycle</strong>
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- STATE MACHINE -->
+
+  <section id="state-machine">
+
+    <p class="eyebrow">state-machine design</p>
+
+    <h2>
+      Representing train behavior as explicit states and transitions.
+    </h2>
+
+    <p>
+      State-machine and UML diagrams were used to model how the trains
+      should respond to track sensors and switch conditions before the
+      controller was implemented in VHDL.
+    </p>
+
+    <p>
+      Each state represented a specific operating condition, while
+      sensor inputs determined when the controller transitioned to the
+      next state and changed the train or switch outputs.
+    </p>
+
+  </section>
+
+
+  <!-- IMPLEMENTATION -->
+
+  <section id="implementation">
+
+    <p class="eyebrow">VHDL implementation</p>
+
+    <h2>
+      Implementing the controller as concurrent digital logic.
+    </h2>
+
+    <p>
+      The control system was implemented in VHDL using Quartus Prime.
+      Sensor signals were represented as hardware inputs, while the
+      controller generated outputs for train movement and track
+      switching.
+    </p>
+
+    <p>
+      The project reinforced the difference between writing sequential
+      software and describing hardware whose signals and logic operate
+      concurrently.
+    </p>
+
+  </section>
+
+
+  <!-- FPGA -->
+
+  <section id="hardware">
+
+    <p class="eyebrow">FPGA implementation</p>
+
+    <h2>
+      Moving the state-machine design onto physical hardware.
+    </h2>
+
+    <p>
+      The VHDL design was compiled in Quartus Prime and targeted to a
+      DE10-Standard FPGA board.
+    </p>
+
+    <p>
+      This provided experience with the complete digital-design flow:
+      defining system behavior, creating the state machine, writing HDL,
+      compiling the design, and deploying it to FPGA hardware.
+    </p>
+
+  </section>
+
+
+  <!-- SKILLS -->
+
+  <section id="skills">
+
+    <p class="eyebrow">engineering skills developed</p>
+
+    <ul class="learning-list">
+
+      <li>
+        Translating physical system behavior into finite-state-machine
+        logic.
+      </li>
+
+      <li>
+        Designing state transitions around sensor inputs and system
+        conditions.
+      </li>
+
+      <li>
+        Implementing digital control logic using VHDL.
+      </li>
+
+      <li>
+        Reasoning about multiple system components operating
+        concurrently.
+      </li>
+
+      <li>
+        Mapping sensor inputs and control outputs to a physical system.
+      </li>
+
+      <li>
+        Using Quartus Prime for FPGA compilation and implementation.
+      </li>
+
+      <li>
+        Deploying digital logic to a DE10-Standard FPGA board.
+      </li>
+
+    </ul>
+
+  </section>
+
+</ProjectCaseLayout>
+
+
+<style>
+
+  section {
+    scroll-margin-top: 110px;
+
+    padding: 0 0 62px;
+    margin: 0 0 62px;
+
+    border-bottom: 1px solid var(--line);
+  }
+
+  section:last-child {
+    margin-bottom: 0;
+    border-bottom: 0;
+  }
+
+  section > .eyebrow {
+    margin: 0 0 18px;
+  }
+
+  section p {
+    max-width: 760px;
+
+    color: #3d3e39;
+
+    font-size: 1.08rem;
+    line-height: 1.65;
+  }
+
+  .big-copy {
+    margin-top: 0;
+
+    color: var(--text);
+
+    font-size: clamp(1.35rem, 2.4vw, 1.9rem);
+    line-height: 1.4;
+  }
+
+  h2 {
+    max-width: 780px;
+
+    margin: 0 0 28px;
+
+    font-size: clamp(2rem, 4vw, 4rem);
+    line-height: 1.03;
+    letter-spacing: -0.045em;
+
+    font-weight: 580;
+  }
+
+  .project-links {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    gap: 14px;
+  }
+
+  .flow {
+    max-width: 580px;
+
+    margin-top: 32px;
+  }
+
+  .flow-box {
+    display: grid;
+    grid-template-columns: 50px 1fr;
+
+    gap: 14px;
+
+    padding: 18px 20px;
+
+    background: var(--surface);
+    border: 1px solid var(--line);
+  }
+
+  .flow-box span {
+    color: var(--muted);
+    font-size: 0.75rem;
+  }
+
+  .flow-arrow {
+    padding: 8px 0 8px 23px;
+
+    color: var(--muted);
+  }
+
+  .learning-list {
+    padding-left: 1.2em;
+  }
+
+  .learning-list li {
+    margin-bottom: 14px;
+
+    color: #3d3e39;
+
+    font-size: 1.08rem;
+    line-height: 1.6;
+  }
+
+</style>

@@ -1,0 +1,730 @@
+---
+import {
+  profile,
+  projects,
+  experience,
+  researchNotes,
+  coursework,
+} from '../data/site';
+
+const path = Astro.url.pathname;
+
+const links = [
+  {
+    label: 'Home',
+    href: '/',
+  },
+  {
+    n: '01',
+    label: 'Projects',
+    href: '/projects',
+    children: projects.map((project) => ({
+      label: project.title,
+      href: `/projects#${project.slug}`,
+    })),
+  },
+
+  {
+    n: '02',
+    label: 'Experience',
+    href: '/experience',
+    children: experience.map((job, i) => ({
+      label: `${job.title} · ${job.company}`,
+      href: `/experience#experience-${i + 1}`,
+    })),
+  },
+
+  {
+    n: '03',
+    label: 'Research',
+    href: '/research',
+    children: researchNotes.map((note, i) => ({
+      label: note.title,
+      href: `/research#research-${i + 1}`,
+    })),
+  },
+
+  {
+    n: '04',
+    label: 'Coursework',
+    href: '/coursework',
+    children: coursework.map((group, i) => ({
+      label: group.area,
+      href: `/coursework#coursework-${i + 1}`,
+    })),
+  },
+
+  {
+    n: '05',
+    label: 'About',
+    href: '/about',
+  },
+];
+---
+
+<header class="site-header">
+  <div class="shell header-inner">
+
+    <a class="brand" href="/" aria-label="Home">
+      {profile.wordmark}
+    </a>
+
+    <button
+      class="menu-button"
+      type="button"
+      aria-expanded="false"
+      aria-controls="site-nav"
+    >
+      Menu
+    </button>
+
+    <nav id="site-nav" class="nav" aria-label="Main navigation">
+
+      {links.map((item) => (
+        <div
+          class:list={[
+            'nav-item',
+            {
+              'has-dropdown': item.children,
+              active:
+                path === item.href ||
+                path.startsWith(`${item.href}/`),
+            },
+          ]}
+        >
+
+          <div class="nav-main-row">
+
+            <a class="nav-link" href={item.href}>
+              {item.n && (
+                  <span class="nav-number">{item.n}</span>
+                )}
+              <span>{item.label}</span>
+
+              {item.children && (
+                <span class="chevron">⌄</span>
+              )}
+            </a>
+
+            {item.children && (
+              <button
+                class="submenu-button"
+                type="button"
+                aria-expanded="false"
+                aria-label={`Open ${item.label} menu`}
+              >
+                +
+              </button>
+            )}
+
+          </div>
+
+          {item.children && (
+            <div class="dropdown">
+              <div class="dropdown-panel">
+
+                {item.children.map((child) => (
+                  <a
+                    class="dropdown-link"
+                    href={child.href}
+                  >
+                    <span>{child.label}</span>
+                    <span class="dropdown-arrow">→</span>
+                  </a>
+                ))}
+
+                <a class="view-all" href={item.href}>
+                  View all {item.label.toLowerCase()}
+                </a>
+
+              </div>
+            </div>
+          )}
+
+        </div>
+      ))}
+
+      <a
+        class="contact"
+        href="/contact"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Get in touch ↗
+      </a>
+
+    </nav>
+  </div>
+</header>
+
+<script>
+  const menuButton = document.querySelector('.menu-button');
+  const nav = document.querySelector('#site-nav');
+
+  menuButton?.addEventListener('click', () => {
+    const open =
+      menuButton.getAttribute('aria-expanded') === 'true';
+
+    menuButton.setAttribute(
+      'aria-expanded',
+      String(!open)
+    );
+
+    nav?.classList.toggle('open', !open);
+  });
+
+  document
+    .querySelectorAll('.submenu-button')
+    .forEach((button) => {
+
+      button.addEventListener('click', () => {
+        const parent = button.closest('.nav-item');
+
+        const open =
+          button.getAttribute('aria-expanded') === 'true';
+
+        document
+          .querySelectorAll('.nav-item.submenu-open')
+          .forEach((item) => {
+            if (item !== parent) {
+              item.classList.remove('submenu-open');
+
+              item
+                .querySelector('.submenu-button')
+                ?.setAttribute(
+                  'aria-expanded',
+                  'false'
+                );
+            }
+          });
+
+        button.setAttribute(
+          'aria-expanded',
+          String(!open)
+        );
+
+        parent?.classList.toggle(
+          'submenu-open',
+          !open
+        );
+      });
+
+    });
+</script>
+
+<style>
+
+  /* HEADER */
+
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+
+    background:
+      color-mix(
+        in srgb,
+        var(--bg) 91%,
+        transparent
+      );
+
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+
+    border-bottom:
+      1px solid
+      color-mix(
+        in srgb,
+        var(--text) 7%,
+        transparent
+      );
+  }
+
+  .header-inner {
+    min-height: 78px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 24px;
+  }
+
+  .brand {
+    color: var(--text);
+
+    font-weight: 720;
+    letter-spacing: -0.03em;
+  }
+
+
+  /* NAV */
+
+  .nav {
+    display: flex;
+    align-items: stretch;
+
+    min-height: 78px;
+
+    gap: 22px;
+  }
+
+  .nav-item {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+  }
+
+  .nav-main-row {
+    display: flex;
+    align-items: center;
+  }
+
+  .nav-link {
+    position: relative;
+
+    height: 78px;
+
+    display: inline-flex;
+    align-items: center;
+
+    gap: 6px;
+
+    color: var(--text);
+
+    font-size: 0.9rem;
+  }
+
+  .nav-number {
+    color: var(--muted);
+    font-size: 0.68rem;
+  }
+
+  .chevron {
+    margin-left: 2px;
+
+    color: var(--muted);
+
+    font-size: 0.75rem;
+
+    transition:
+      transform 0.2s ease,
+      color 0.2s ease;
+  }
+
+
+  /* ACTIVE UNDERLINE */
+
+  .nav-link::after {
+    content: '';
+
+    position: absolute;
+
+    left: 0;
+    right: 0;
+    bottom: 17px;
+
+    height: 1px;
+
+    background: var(--text);
+
+    transform: scaleX(0);
+    transform-origin: left;
+
+    transition: transform 0.2s ease;
+  }
+
+  .nav-item:hover .nav-link::after,
+  .nav-item:focus-within .nav-link::after,
+  .nav-item.active .nav-link::after {
+    transform: scaleX(1);
+  }
+
+  .nav-item:hover .chevron,
+  .nav-item:focus-within .chevron {
+    color: var(--accent);
+    transform: rotate(180deg);
+  }
+
+
+  /* DROPDOWN */
+
+  .dropdown {
+    position: absolute;
+
+    top: calc(100% - 8px);
+    left: -16px;
+
+    min-width: 255px;
+
+    padding-top: 12px;
+
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+
+    transform: translateY(-5px);
+
+    transition:
+      opacity 0.16s ease,
+      transform 0.16s ease,
+      visibility 0.16s ease;
+  }
+
+  .nav-item:hover .dropdown,
+  .nav-item:focus-within .dropdown {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+
+    transform: translateY(0);
+  }
+
+  .dropdown-panel {
+    padding: 7px;
+
+    background:
+      color-mix(
+        in srgb,
+        var(--bg) 96%,
+        transparent
+      );
+
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+
+    border-radius: 8px;
+
+    box-shadow:
+      0 10px 32px rgba(0, 0, 0, 0.09),
+      0 1px 5px rgba(0, 0, 0, 0.04);
+  }
+
+  .dropdown-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding: 11px 12px;
+
+    border-radius: 5px;
+
+    color: var(--text);
+
+    font-size: 0.86rem;
+    line-height: 1.3;
+
+    transition:
+      background 0.15s ease,
+      padding-left 0.15s ease;
+  }
+
+  .dropdown-link + .dropdown-link {
+    border-top:
+      1px solid
+      color-mix(
+        in srgb,
+        var(--text) 6%,
+        transparent
+      );
+  }
+
+  .dropdown-arrow {
+    color: var(--muted);
+
+    opacity: 0;
+
+    transform: translateX(-4px);
+
+    transition:
+      opacity 0.15s ease,
+      transform 0.15s ease,
+      color 0.15s ease;
+  }
+
+  .dropdown-link:hover,
+  .dropdown-link:focus-visible {
+    background:
+      color-mix(
+        in srgb,
+        var(--surface) 72%,
+        transparent
+      );
+
+    padding-left: 15px;
+  }
+
+  .dropdown-link:hover .dropdown-arrow,
+  .dropdown-link:focus-visible .dropdown-arrow {
+    opacity: 1;
+
+    color: var(--accent);
+
+    transform: translateX(0);
+  }
+
+
+  /* VIEW ALL */
+
+  .view-all {
+    display: block;
+
+    margin-top: 6px;
+
+    padding: 10px 12px 8px;
+
+    border-top:
+      1px solid
+      color-mix(
+        in srgb,
+        var(--text) 10%,
+        transparent
+      );
+
+    color: var(--muted);
+
+    font-size: 0.75rem;
+
+    transition: color 0.15s ease;
+  }
+
+  .view-all:hover {
+    color: var(--accent);
+  }
+
+
+  /* CONTACT */
+
+  .contact {
+    align-self: center;
+
+    padding: 10px 15px;
+
+    border:
+      1px solid
+      color-mix(
+        in srgb,
+        var(--text) 55%,
+        transparent
+      );
+
+    border-radius: 999px;
+
+    color: var(--text);
+
+    font-size: 0.86rem;
+    line-height: 1.3;
+
+    transition:
+      background 0.2s ease,
+      color 0.2s ease,
+      border-color 0.2s ease;
+  }
+
+  .contact:hover {
+    background: var(--text);
+    color: var(--bg);
+    border-color: var(--text);
+  }
+
+
+  /* MOBILE BUTTONS */
+
+  .menu-button,
+  .submenu-button {
+    display: none;
+  }
+
+
+  /* MOBILE */
+
+  @media (max-width: 900px) {
+
+    .header-inner {
+      min-height: 70px;
+    }
+
+    .menu-button {
+      display: block;
+
+      padding: 8px 0;
+
+      border: 0;
+      background: none;
+
+      color: var(--text);
+
+      cursor: pointer;
+    }
+
+    .nav {
+      display: none;
+
+      position: absolute;
+
+      top: 69px;
+      left: 0;
+      right: 0;
+
+      min-height: 0;
+
+      padding: 12px 24px 26px;
+
+      background:
+        color-mix(
+          in srgb,
+          var(--bg) 97%,
+          transparent
+        );
+
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+
+      border-bottom:
+        1px solid
+        color-mix(
+          in srgb,
+          var(--text) 8%,
+          transparent
+        );
+
+      flex-direction: column;
+      align-items: stretch;
+
+      gap: 0;
+    }
+
+    .nav.open {
+      display: flex;
+    }
+
+    .nav-item {
+      display: block;
+
+      width: 100%;
+
+      border-bottom:
+        1px solid
+        color-mix(
+          in srgb,
+          var(--text) 8%,
+          transparent
+        );
+    }
+
+    .nav-main-row {
+      width: 100%;
+
+      justify-content: space-between;
+    }
+
+    .nav-link {
+      flex: 1;
+
+      height: auto;
+
+      padding: 15px 0;
+
+      font-size: 1.05rem;
+    }
+
+    .nav-link::after {
+      display: none;
+    }
+
+    .chevron {
+      display: none;
+    }
+
+    .submenu-button {
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      width: 44px;
+      height: 44px;
+
+      border: 0;
+
+      background: transparent;
+
+      color: var(--text);
+
+      font-size: 1.3rem;
+
+      cursor: pointer;
+
+      transition:
+        transform 0.2s ease,
+        color 0.2s ease;
+    }
+
+    .nav-item.submenu-open .submenu-button {
+      color: var(--accent);
+
+      transform: rotate(45deg);
+    }
+
+
+    /* MOBILE SUBMENU */
+
+    .dropdown {
+      position: static;
+
+      display: none;
+
+      min-width: 0;
+
+      padding: 0 0 12px;
+
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+
+      transform: none;
+    }
+
+    .nav-item.submenu-open .dropdown {
+      display: block;
+    }
+
+    .dropdown-panel {
+      padding: 5px 8px;
+
+      background:
+        color-mix(
+          in srgb,
+          var(--surface) 65%,
+          transparent
+        );
+
+      border-radius: 7px;
+
+      box-shadow: none;
+    }
+
+    .dropdown-link {
+      padding: 11px 10px;
+    }
+
+    .dropdown-arrow {
+      display: none;
+    }
+
+    .view-all {
+      padding: 10px;
+    }
+
+    .contact {
+      margin-top: 22px;
+
+      align-self: flex-start;
+    }
+  }
+
+  
+</style>

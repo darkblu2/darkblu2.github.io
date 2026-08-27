@@ -1,0 +1,191 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const {
+  title,
+  description,
+  number,
+  year,
+  status,
+  tagline,
+  image,
+  video,
+  tags = [],
+} = Astro.props;
+---
+
+<BaseLayout
+  title={`${title}`}
+  description={description}
+>
+  <article class="shell case">
+
+    <a class="back" href="/projects">
+      ← All projects
+    </a>
+
+    <header class="case-head">
+
+      <div>
+        <p class="eyebrow">
+          {number} · {year} · {status}
+        </p>
+
+        <h1 class="h1">{title}</h1>
+      </div>
+
+      <p class="lede">
+        {tagline}
+      </p>
+
+    </header>
+
+    {video ? (
+      <video
+        class="hero-image hero-video"
+        src={video}
+        poster={image}
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="metadata"
+      />
+    ) : image && (
+      <img
+        class="hero-image"
+        src={image}
+        alt={title}
+      />
+    )}
+
+    <div class="case-grid">
+
+      <aside class="sidebar">
+
+        <p class="eyebrow">stack</p>
+
+        <div class="tags">
+          {tags.map((tag) => (
+            <span class="pill">{tag}</span>
+          ))}
+        </div>
+
+        <slot name="sidebar" />
+
+      </aside>
+
+      <main class="story">
+        <slot />
+      </main>
+
+    </div>
+
+  </article>
+</BaseLayout>
+
+<style>
+  .case {
+    padding: 48px 0 80px;
+  }
+
+  .back {
+    color: var(--muted);
+    font-size: 0.88rem;
+  }
+
+  .back:hover {
+    color: var(--text);
+  }
+
+  .case-head {
+    display: grid;
+    grid-template-columns: 1.4fr 0.6fr;
+    gap: 50px;
+
+    align-items: end;
+
+    margin: 54px 0 46px;
+  }
+
+  .case-head .eyebrow {
+    margin: 0 0 14px;
+  }
+
+  .case-head .lede {
+    margin: 0;
+  }
+
+  .hero-image {
+    width: 100%;
+    aspect-ratio: 16 / 8;
+
+    object-fit: cover;
+
+    background: var(--surface);
+    border: 1px solid var(--line);
+  }
+
+  .hero-image {
+    width: 100%;
+    aspect-ratio: 16 / 8;
+
+    object-fit: cover;
+
+    background: var(--surface);
+    border: 1px solid var(--line);
+  }
+
+  /* Videos use the 16:10 project-card ratio */
+  .hero-video {
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+  }
+
+  .case-grid {
+    display: grid;
+    grid-template-columns: 240px minmax(0, 1fr);
+    gap: 70px;
+
+    padding-top: 54px;
+  }
+
+  .sidebar {
+    align-self: start;
+
+    position: sticky;
+    top: 110px;
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+
+    margin: 12px 0 26px;
+  }
+
+  .story {
+    min-width: 0;
+    max-width: 850px;
+  }
+
+  @media (max-width: 760px) {
+    .case-head,
+    .case-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .case-grid {
+      gap: 38px;
+    }
+
+    .sidebar {
+      position: static;
+    }
+
+    .hero-image {
+      aspect-ratio: 4 / 3;
+    }
+  }
+</style>

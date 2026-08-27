@@ -1,0 +1,302 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { profile } from '../data/site';
+---
+
+<BaseLayout title={`Contact — ${profile.name}`}>
+  <section class="shell contact-page">
+
+    <div class="contact-copy">
+      <p class="eyebrow">contact</p>
+
+      <h1>Get in touch.</h1>
+
+      <p class="intro">
+      </p>
+
+      <div class="contact-links">
+        <div class="contact-item">
+          <span class="label">Email</span>
+
+          <a href={`mailto:${profile.email}`}>
+            {profile.email}
+            <span>↗</span>
+          </a>
+        </div>
+
+        <div class="contact-item">
+          <span class="label">Elsewhere</span>
+
+          <div class="socials">
+            <a
+              href={profile.linkedin}
+              target="_blank"
+              rel="noreferrer"
+            >
+              LinkedIn <span>↗</span>
+            </a>
+
+            <a
+              href={profile.github}
+              target="_blank"
+              rel="noreferrer"
+            >
+              GitHub <span>↗</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="contact-graphic" aria-hidden="true">
+    <svg viewBox="0 0 600 600">
+        <!-- outer structure -->
+        <rect class="outline" x="70" y="70" width="460" height="460" />
+
+        <!-- architectural blocks -->
+        <rect class="block" x="105" y="105" width="170" height="120" />
+        <rect class="block" x="305" y="105" width="190" height="70" />
+        <rect class="block" x="305" y="195" width="190" height="130" />
+
+        <rect class="block" x="105" y="255" width="170" height="150" />
+
+        <!-- one stronger block -->
+        <rect class="accent-block" x="305" y="355" width="190" height="110" />
+
+        <!-- connecting paths -->
+        <path
+        class="trace"
+        d="M275 165 H305"
+        />
+
+        <path
+        class="trace"
+        d="M190 225 V255"
+        />
+
+        <path
+        class="trace"
+        d="M275 330 H305"
+        />
+
+        <path
+        class="trace"
+        d="M400 325 V355"
+        />
+
+        <!-- small details -->
+        <circle class="node" cx="190" cy="165" r="7" />
+        <circle class="node" cx="400" cy="260" r="7" />
+        <circle class="node accent-node" cx="400" cy="410" r="8" />
+
+        <line class="detail" x1="125" y1="435" x2="275" y2="435" />
+        <line class="detail" x1="125" y1="460" x2="230" y2="460" />
+        <line class="detail" x1="125" y1="485" x2="250" y2="485" />
+    </svg>
+    </div>
+
+  </section>
+</BaseLayout>
+
+<style>
+  .contact-page {
+    min-height: calc(100vh - 78px);
+
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+
+    gap: clamp(60px, 8vw, 120px);
+
+    align-items: center;
+
+    padding-top: 60px;
+    padding-bottom: 90px;
+  }
+
+  .contact-copy {
+    max-width: 520px;
+  }
+
+  .contact-copy .eyebrow {
+    margin: 0 0 20px;
+  }
+
+  .contact-copy h1 {
+    margin: 0;
+
+    font-size: clamp(2.7rem, 4.8vw, 4.8rem);
+    line-height: 0.96;
+
+    letter-spacing: -0.052em;
+    font-weight: 620;
+  }
+
+  .intro {
+    max-width: 470px;
+
+    margin: 26px 0 48px;
+
+    color: var(--muted);
+
+    font-size: 1.05rem;
+    line-height: 1.65;
+  }
+
+  .contact-links {
+    max-width: 470px;
+
+    border-top: 1px solid var(--line);
+  }
+
+  .contact-item {
+    display: grid;
+    grid-template-columns: 90px 1fr;
+
+    gap: 20px;
+
+    padding: 16px 0;
+
+    border-bottom: 1px solid var(--line);
+  }
+
+  .label {
+    padding-top: 3px;
+
+    color: var(--muted);
+
+    font-size: 0.72rem;
+
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .contact-item a {
+    width: fit-content;
+
+    color: var(--text);
+
+    transition: color 0.18s ease;
+  }
+
+  .contact-item a span {
+    color: var(--accent);
+    margin-left: 3px;
+  }
+
+  .contact-item a:hover {
+    color: var(--accent);
+  }
+
+  .socials {
+    display: flex;
+    gap: 22px;
+  }
+
+    .contact-graphic {
+    width: 100%;
+    max-width: 620px;
+
+    justify-self: end;
+
+    aspect-ratio: 1 / 1;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    }
+
+    .contact-graphic svg {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+    }
+
+    /* large outside square */
+    .contact-graphic .outline {
+    fill: none;
+    stroke: var(--text);
+    stroke-width: 2;
+    }
+
+    /* inner geometric regions */
+    .contact-graphic .block {
+    fill: var(--surface);
+
+    stroke: var(--text);
+    stroke-width: 1.4;
+    }
+
+    /* subtle accent region */
+    .contact-graphic .accent-block {
+    fill:
+        color-mix(
+        in srgb,
+        var(--accent) 10%,
+        var(--surface)
+        );
+
+    stroke: var(--accent);
+    stroke-width: 1.5;
+    }
+
+    /* connections */
+    .contact-graphic .trace {
+    fill: none;
+
+    stroke: var(--text);
+    stroke-width: 1.5;
+    }
+
+    /* nodes */
+    .contact-graphic .node {
+    fill: var(--bg);
+
+    stroke: var(--text);
+    stroke-width: 1.5;
+    }
+
+    .contact-graphic .accent-node {
+    fill: var(--accent);
+    stroke: var(--accent);
+    }
+
+    /* little architectural lines */
+    .contact-graphic .detail {
+    stroke: var(--muted);
+    stroke-width: 1;
+    }
+
+  @media (max-width: 850px) {
+    .contact-page {
+      min-height: auto;
+
+      grid-template-columns: 1fr;
+
+      gap: 55px;
+
+      align-items: start;
+
+      padding-top: 55px;
+      padding-bottom: 80px;
+    }
+
+    .contact-image {
+      max-width: 650px;
+
+      aspect-ratio: 16 / 10;
+    }
+  }
+
+    @media (max-width: 850px) {
+    .contact-graphic {
+        justify-self: start;
+        max-width: 550px;
+    }
+
+    .socials {
+      flex-direction: column;
+      gap: 8px;
+    }
+  }
+</style>

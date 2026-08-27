@@ -1,0 +1,546 @@
+---
+import ProjectCaseLayout from '../../components/ProjectCaseLayout.astro';
+import CaseStudyTOC from '../../components/CaseStudyTOC.astro';
+import { projects } from '../../data/site';
+
+const project = projects.find(
+  (project) => project.slug === 'virtual-fence-geofence'
+);
+
+if (!project) {
+  throw new Error('Virtual Fence - Geofence project not found');
+}
+
+const toc = [
+  { id: 'overview', label: 'Overview' },
+  { id: 'contribution', label: 'Technical Contribution' },
+  { id: 'challenge', label: 'The Challenge' },
+  { id: 'architecture', label: 'System Architecture' },
+  { id: 'sensing', label: 'Position Sensing' },
+  { id: 'boundary', label: 'Boundary Calculation' },
+  { id: 'integration', label: 'System Integration' },
+  { id: 'skills', label: 'Engineering Skills' },
+];
+---
+
+<ProjectCaseLayout
+  title={project.title}
+  description={project.description}
+  number={project.number}
+  year={project.year}
+  status={project.status}
+  tagline={project.tagline}
+  image={project.image}
+  tags={project.tags}
+>
+
+  <div slot="sidebar" class="project-links">
+
+  <a
+    class="text-link"
+    href="https://github.com/EPICS-EVEI"
+    target="_blank"
+    rel="noreferrer"
+  >
+    EPICS EVEI GitHub <span>↗</span>
+  </a>
+
+  <a
+    class="text-link"
+    href="https://epics-evei.github.io/"
+    target="_blank"
+    rel="noreferrer"
+  >
+    Geofence Project Website <span>↗</span>
+  </a>
+
+  <CaseStudyTOC items={toc} />
+
+  </div>
+
+
+  <!-- OVERVIEW -->
+
+  <section id="overview" class="overview">
+
+    <p class="eyebrow">overview</p>
+
+    <p class="big-copy">
+      The Geofence is a web-based tool that allows users to define virtual boundaries
+       for a remote-controlled Go-Kart using GPS coordinates. Through an interactive
+        map, users can place pins to form polygons that represent either outside or inside
+         boundaries, enabling the creation of safe zones with or without inner exclusions.
+    </p>
+
+    <p>
+      The interface supports panning, zooming, and toggling between map views, while a
+       “Show/Hide Pins” option makes pins draggable for precise adjustments. Each pin 
+       is listed below the map with its latitude and longitude, and users can delete 
+       individual points or clear the entire set to start fresh. Once a boundary is 
+       finalized, the system generates a CSV file containing the coordinates, organized
+        into outer and inner boundary sections. This CSV can be directly integrated with
+         the Go-Kart’s control system, where a point-in-polygon algorithm checks the 
+         kart’s real-time GPS position. If the vehicle crosses outside the designated
+          safe zone, the onboard system automatically engages the brakes.
+    </p>
+
+  </section>
+
+
+  <!-- MY CONTRIBUTION -->
+
+  <section id="contribution" class="contribution">
+
+    <p class="eyebrow">my contribution</p>
+
+    <h2>
+      Turning GPS coordinates into a boundary the go-kart could
+      evaluate in real time.
+    </h2>
+
+    <p>
+    My primary contribution was the geofence boundary calculation and
+    its implementation within the vehicle system. I worked on the
+    polygon-based logic used to determine the go-kart's position
+    relative to the user-defined safe operating region.
+    </p>
+
+    <p>
+    The safety logic also considered the kart's speed and projected
+    motion rather than waiting until the vehicle had already crossed
+    the boundary. This allowed the system to evaluate whether the kart
+    was likely to leave the permitted region and initiate braking early
+    enough to keep the vehicle within the designated area.
+    </p>
+
+    <p>
+    I also worked with the GPS portion of the system and contributed to
+    the HTML interface for the Geofence Creator. Together, these pieces
+    connected user-defined geographic boundaries, real-time vehicle
+    position and motion data, predictive boundary detection, and the
+    automatic braking response.
+    </p>
+
+  </section>
+
+
+<!-- PROBLEM -->
+
+<section id="challenge">
+
+  <p class="eyebrow">the challenge</p>
+
+  <h2>
+    How can a moving vehicle predict that it is about to leave an
+    invisible safety boundary?
+  </h2>
+
+  <p>
+    A virtual fence has no physical barrier for the go-kart to detect.
+    The system therefore needed to represent the permitted operating
+    region mathematically and continuously compare the kart's GPS
+    position against that boundary.
+  </p>
+
+  <p>
+    Detecting that the kart had already crossed the boundary would
+    also be too late for a safety system. The controller needed to
+    consider the vehicle's speed and motion to estimate whether it
+    was approaching the boundary in a way that could carry it outside
+    the permitted region.
+  </p>
+
+  <p>
+    This required the full system to work together: the user defined
+    the safe region, the boundary coordinates were transferred to the
+    onboard system, GPS and motion data described the kart's current
+    state, and the boundary logic determined whether braking needed
+    to begin before the vehicle left the designated area.
+  </p>
+
+</section>
+
+
+<!-- SYSTEM ARCHITECTURE -->
+
+<section id="architecture">
+
+  <p class="eyebrow">system architecture</p>
+
+  <h2>
+    From a browser-defined safe region to predictive automatic braking.
+  </h2>
+
+  <p>
+    The system connected a web-based Geofence Creator to the embedded
+    control system on the go-kart. User-defined coordinates established
+    the permitted region, while onboard position and motion data were
+    used to determine whether the kart could safely remain inside it.
+  </p>
+
+  <div class="flow">
+
+    <div class="flow-box">
+      <span>01</span>
+      <strong>User defines the permitted operating region</strong>
+    </div>
+
+    <div class="flow-arrow">↓</div>
+
+    <div class="flow-box">
+      <span>02</span>
+      <strong>Geofence Creator converts selected points into a boundary</strong>
+    </div>
+
+    <div class="flow-arrow">↓</div>
+
+    <div class="flow-box">
+      <span>03</span>
+      <strong>Boundary coordinates are exported to the vehicle system</strong>
+    </div>
+
+    <div class="flow-arrow">↓</div>
+
+    <div class="flow-box">
+      <span>04</span>
+      <strong>GPS and motion data describe the kart's current state</strong>
+    </div>
+
+    <div class="flow-arrow">↓</div>
+
+    <div class="flow-box">
+      <span>05</span>
+      <strong>Polygon logic evaluates the kart relative to the safe region</strong>
+    </div>
+
+    <div class="flow-arrow">↓</div>
+
+    <div class="flow-box">
+      <span>06</span>
+      <strong>Speed and projected motion are used to anticipate a boundary exit</strong>
+    </div>
+
+    <div class="flow-arrow">↓</div>
+
+    <div class="flow-box">
+      <span>07</span>
+      <strong>Automatic braking begins before the kart leaves the safe area</strong>
+    </div>
+
+  </div>
+
+</section>
+
+<!-- GPS -->
+
+<section id="sensing">
+  <p class="eyebrow">position sensing</p>
+
+  <h2>Turning vehicle position into usable safety data.</h2>
+
+  <p>
+    GPS provided the kart's real-time latitude and longitude, while the
+    wider system also used IMU data to describe vehicle motion.
+  </p>
+
+  <p>
+    I worked with the GPS portion of the system and the position data
+    used by the boundary-detection logic.
+  </p>
+</section>
+
+
+<!-- BOUNDARY -->
+
+<section id="boundary">
+  <p class="eyebrow">boundary calculation</p>
+
+  <h2>Predicting whether the kart would leave the safe region.</h2>
+
+  <p>
+    My main technical contribution was the polygon-based calculation
+    used to evaluate the kart's GPS position relative to the user-defined
+    geofence.
+  </p>
+
+  <p>
+    The system also considered speed and expected motion so braking could
+    begin before the kart crossed the boundary rather than reacting after
+    it had already entered an unsafe area.
+  </p>
+
+  <div class="decision">
+    <div>GPS position</div>
+    <span>+</span>
+    <div>Polygon boundary</div>
+    <span>+</span>
+    <div>Speed / motion</div>
+    <span>→</span>
+    <div>Boundary risk</div>
+  </div>
+
+  <div class="result-grid">
+    <div>
+      <p class="eyebrow">safe</p>
+      <strong>Continue operation</strong>
+    </div>
+
+    <div>
+      <p class="eyebrow">exit predicted</p>
+      <strong>Initiate braking</strong>
+    </div>
+  </div>
+</section>
+
+
+<!-- SYSTEM RESPONSE -->
+
+<section id="integration">
+  <p class="eyebrow">system integration</p>
+
+  <h2>Connecting sensing, computation, and braking.</h2>
+
+  <p>
+    The geofence operated as part of the larger go-kart system, linking
+    GPS and IMU sensing, embedded electronics, boundary calculations,
+    and the automatic braking mechanism.
+  </p>
+
+  <p>
+    The project showed me how a software calculation becomes useful only
+    when its inputs come from real sensors and its output can drive a
+    physical response.
+  </p>
+</section>
+
+
+<!-- LEARNING -->
+
+<section id="skills">
+  <p class="eyebrow">what I learned</p>
+
+  <ul class="learning-list">
+    <li>Processing real-time GPS data for use in an embedded control system.</li>
+
+    <li>Implementing polygon-based boundary calculations for geofencing.</li>
+
+    <li>Using vehicle speed and projected motion to support predictive safety decisions.</li>
+
+    <li>Designing logic around noisy, imperfect sensor measurements rather than ideal inputs.</li>
+
+    <li>Integrating user-defined web inputs with onboard embedded calculations.</li>
+
+    <li>Understanding interfaces between sensing, decision logic, and physical actuation.</li>
+
+    <li>Thinking about safety requirements in terms of system response time, stopping behavior, and operating constraints.</li>
+  </ul>
+</section>
+</ProjectCaseLayout>
+
+
+<style>
+
+  section {
+    padding: 0 0 62px;
+    margin: 0 0 62px;
+
+    border-bottom: 1px solid var(--line);
+  }
+
+  section:last-child {
+    margin-bottom: 0;
+    border-bottom: 0;
+  }
+
+  section > .eyebrow {
+    margin: 0 0 18px;
+  }
+
+  section p {
+    max-width: 760px;
+
+    color: #3d3e39;
+
+    font-size: 1.08rem;
+    line-height: 1.65;
+  }
+
+  .big-copy {
+    margin-top: 0;
+
+    color: var(--text);
+
+    font-size: clamp(1.35rem, 2.4vw, 1.9rem);
+    line-height: 1.4;
+  }
+
+  h2 {
+    max-width: 780px;
+
+    margin: 0 0 28px;
+
+    font-size: clamp(2rem, 4vw, 4rem);
+    line-height: 1.03;
+    letter-spacing: -0.045em;
+
+    font-weight: 580;
+  }
+
+  .content-image {
+    width: 100%;
+
+    margin: 32px 0;
+
+    border: 1px solid var(--line);
+  }
+
+  .project-links {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    gap: 14px;
+  }
+
+  .flow {
+    max-width: 560px;
+
+    margin-top: 32px;
+  }
+
+  .flow-box {
+    display: grid;
+    grid-template-columns: 50px 1fr;
+    gap: 14px;
+
+    padding: 18px 20px;
+
+    background: var(--surface);
+    border: 1px solid var(--line);
+  }
+
+  .flow-box span {
+    color: var(--muted);
+    font-size: 0.75rem;
+  }
+
+  .flow-arrow {
+    padding: 8px 0 8px 23px;
+
+    color: var(--muted);
+  }
+
+  .decision {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+
+    gap: 14px;
+
+    margin: 34px 0;
+  }
+
+  .decision div {
+    padding: 16px 18px;
+
+    background: var(--surface);
+    border: 1px solid var(--line);
+  }
+
+  .decision span {
+    color: var(--muted);
+  }
+
+  .result-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    gap: 14px;
+  }
+
+  .result-grid > div {
+    padding: 22px;
+
+    border: 1px solid var(--line);
+  }
+
+  .result-grid .eyebrow {
+    margin: 0 0 10px;
+  }
+
+  .learning-list {
+    padding-left: 1.2em;
+  }
+
+  .learning-list li {
+    margin-bottom: 14px;
+
+    color: #3d3e39;
+
+    font-size: 1.08rem;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 760px) {
+
+    .result-grid {
+      grid-template-columns: 1fr;
+    }
+
+  }
+
+.contribution-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 12px;
+
+  margin-top: 34px;
+}
+
+.contribution-grid > div {
+  padding: 22px;
+
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+
+.contribution-grid .num {
+  display: block;
+
+  margin-bottom: 26px;
+
+  color: var(--muted);
+  font-size: 0.72rem;
+}
+
+.contribution-grid h3 {
+  margin: 0 0 12px;
+
+  font-size: 1.15rem;
+  font-weight: 580;
+}
+
+.contribution-grid p {
+  margin: 0;
+
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+
+@media (max-width: 760px) {
+  .contribution-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+section {
+  scroll-margin-top: 110px;
+
+  padding: 0 0 62px;
+  margin: 0 0 62px;
+
+  border-bottom: 1px solid var(--line);
+}
+
+</style>

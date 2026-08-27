@@ -1,0 +1,359 @@
+---
+import ProjectCaseLayout from '../../components/ProjectCaseLayout.astro';
+import { projects } from '../../data/site';
+
+const project = projects.find(
+  (project) => project.slug === 'electric-go-kart'
+);
+
+if (!project) {
+  throw new Error('Electric Go-Kart project not found');
+}
+
+const toc = [
+  { id: 'overview', label: 'Overview' },
+  { id: 'contribution', label: 'Technical Contribution' },
+  { id: 'challenge', label: 'The Challenge' },
+  { id: 'design', label: 'Chassis Design' },
+  { id: 'fabrication', label: 'Fabrication' },
+  { id: 'integration', label: 'System Integration' },
+  { id: 'skills', label: 'Engineering Skills' },
+];
+---
+
+<ProjectCaseLayout
+  title={project.title}
+  description={project.description}
+  number={project.number}
+  year={project.year}
+  status={project.status}
+  tagline={project.tagline}
+  image={project.image}
+  tags={project.tags}
+>
+
+  <!-- OVERVIEW -->
+
+  <section>
+    <p class="eyebrow">overview</p>
+
+    <p class="big-copy">
+      A team project to design and build an electric go-kart from the
+      ground up, integrating the chassis, drivetrain, steering,
+      electronics, and vehicle structure into a complete system.
+    </p>
+
+    <p>
+      My work focused primarily on the chassis design and fabrication
+      process, giving me early experience with CAD, mechanical design,
+      structural considerations, and hands-on manufacturing.
+    </p>
+  </section>
+
+
+  <!-- CONTRIBUTION -->
+
+  <section>
+    <p class="eyebrow">technical contribution</p>
+
+    <h2>
+      Designing and fabricating the structure that supported the
+      vehicle.
+    </h2>
+
+    <div class="contribution-grid">
+
+      <div>
+        <span class="num">01</span>
+        <h3>Chassis Design</h3>
+        <p>
+          Contributed to developing the frame geometry while considering
+          component placement, vehicle structure, and subsystem integration.
+        </p>
+      </div>
+
+      <div>
+        <span class="num">02</span>
+        <h3>CAD</h3>
+        <p>
+          Used Fusion 360 to model and evaluate chassis concepts before
+          fabrication.
+        </p>
+      </div>
+
+      <div>
+        <span class="num">03</span>
+        <h3>Fabrication</h3>
+        <p>
+          Participated in chassis fabrication and gained hands-on
+          experience with MIG welding and mechanical assembly.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- DESIGN CHALLENGE -->
+
+  <section>
+    <p class="eyebrow">the challenge</p>
+
+    <h2>
+      Designing one structure around several interacting vehicle systems.
+    </h2>
+
+    <p>
+      The chassis needed to provide the physical structure of the kart
+      while also accommodating the drivetrain, steering, electronics,
+      seating, and other components.
+    </p>
+
+    <p>
+      This meant the frame could not be designed independently. Geometry
+      and component placement had to be considered together so that the
+      mechanical and electrical subsystems could fit into one functional
+      vehicle.
+    </p>
+  </section>
+
+
+  <!-- CAD / DESIGN -->
+
+  <section>
+    <p class="eyebrow">design</p>
+
+    <h2>
+      Moving from vehicle requirements to a manufacturable frame.
+    </h2>
+
+    <p>
+      We developed chassis concepts around the dimensions and placement
+      requirements of the major vehicle components. Fusion 360 was used
+      to visualize the frame and refine the layout before fabrication.
+    </p>
+
+    <img
+      class="content-image"
+      src="/images/electric-go-kart-02.jpeg"
+      alt="Electric go-kart chassis design and construction"
+    />
+  </section>
+
+
+  <!-- FABRICATION -->
+
+  <section>
+    <p class="eyebrow">fabrication</p>
+
+    <h2>
+      Turning the CAD design into a physical structure.
+    </h2>
+
+    <p>
+      Fabrication introduced constraints that are less obvious in a CAD
+      model, including material placement, joint geometry, alignment, and
+      the practical sequence required to assemble the frame.
+    </p>
+
+    <p>
+      I gained introductory experience with MIG welding while helping
+      fabricate the chassis and saw how manufacturing considerations can
+      influence design decisions.
+    </p>
+
+    <img
+      class="content-image"
+      src="/images/electric-go-kart-03.jpeg"
+      alt="Electric go-kart fabrication"
+    />
+  </section>
+
+
+  <!-- SYSTEM INTEGRATION -->
+
+  <section>
+    <p class="eyebrow">system integration</p>
+
+    <h2>
+      The chassis had to support more than its own structure.
+    </h2>
+
+    <p>
+      Building the complete kart required the frame to interface with
+      the drivetrain, steering, electrical system, and other mechanical
+      components.
+    </p>
+
+    <p>
+      This project introduced me to system-level engineering: a design
+      decision in one subsystem can create constraints for several others,
+      so mechanical, electrical, and packaging requirements have to be
+      considered together.
+    </p>
+  </section>
+
+
+  <!-- ENGINEERING SKILLS -->
+
+  <section>
+    <p class="eyebrow">engineering skills developed</p>
+
+    <ul class="learning-list">
+      <li>
+        Using Fusion 360 to translate physical requirements into CAD geometry.
+      </li>
+
+      <li>
+        Considering component placement and subsystem interfaces during
+        chassis design.
+      </li>
+
+      <li>
+        Understanding how manufacturability affects mechanical design
+        decisions.
+      </li>
+
+      <li>
+        Introductory MIG welding and hands-on metal fabrication.
+      </li>
+
+      <li>
+        Moving between a digital CAD model and the tolerances and constraints
+        of a physical build.
+      </li>
+
+      <li>
+        Thinking about mechanical and electrical subsystems as parts of an
+        integrated vehicle rather than independent components.
+      </li>
+    </ul>
+  </section>
+
+</ProjectCaseLayout>
+
+
+<style>
+
+  section {
+    padding: 0 0 62px;
+    margin: 0 0 62px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  section:last-child {
+    margin-bottom: 0;
+    border-bottom: 0;
+  }
+
+  section > .eyebrow {
+    margin: 0 0 18px;
+  }
+
+  section p {
+    max-width: 760px;
+    color: #3d3e39;
+    font-size: 1.08rem;
+    line-height: 1.65;
+  }
+
+  .big-copy {
+    margin-top: 0;
+    color: var(--text);
+    font-size: clamp(1.35rem, 2.4vw, 1.9rem);
+    line-height: 1.4;
+  }
+
+  h2 {
+    max-width: 780px;
+    margin: 0 0 28px;
+
+    font-size: clamp(2rem, 4vw, 4rem);
+    line-height: 1.03;
+    letter-spacing: -0.045em;
+    font-weight: 580;
+  }
+
+  .content-image {
+    width: 100%;
+    margin: 32px 0 0;
+
+    border: 1px solid var(--line);
+  }
+
+
+  /* CONTRIBUTION */
+
+  .contribution-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+
+    margin-top: 34px;
+  }
+
+  .contribution-grid > div {
+    padding: 22px;
+
+    background: var(--surface);
+    border: 1px solid var(--line);
+  }
+
+  .contribution-grid .num {
+    display: block;
+
+    margin-bottom: 26px;
+
+    color: var(--muted);
+    font-size: 0.72rem;
+  }
+
+  .contribution-grid h3 {
+    margin: 0 0 12px;
+
+    font-size: 1.15rem;
+    font-weight: 580;
+  }
+
+  .contribution-grid p {
+    margin: 0;
+
+    font-size: 0.92rem;
+    line-height: 1.55;
+  }
+
+
+  /* LEARNING */
+
+  .learning-list {
+    padding-left: 1.2em;
+  }
+
+  .learning-list li {
+    margin-bottom: 14px;
+
+    color: #3d3e39;
+
+    font-size: 1.08rem;
+    line-height: 1.6;
+  }
+
+
+  @media (max-width: 760px) {
+
+    .contribution-grid {
+      grid-template-columns: 1fr;
+    }
+
+  }
+
+section {
+  scroll-margin-top: 110px;
+
+  padding: 0 0 62px;
+  margin: 0 0 62px;
+
+  border-bottom: 1px solid var(--line);
+}
+
+</style>

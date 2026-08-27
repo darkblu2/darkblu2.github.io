@@ -1,0 +1,263 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { experience, profile } from '../data/site';
+---
+
+<BaseLayout title={`Experience — ${profile.name}`}>
+
+  <section class="shell intro">
+
+    <p class="eyebrow">experience</p>
+
+    <h1 class="h1">
+      Experience in the industry.
+    </h1>
+
+    <p class="lede">
+      My work has ranged from embedded communication and automated
+      test systems to equipment reliability, data analysis, and
+      electrical design.
+    </p>
+
+  </section>
+
+
+  <section class="shell timeline">
+
+    {experience.map((job, i) => (
+
+      <article id={`experience-${i + 1}`} class="job">
+
+        <!-- LEFT SIDE -->
+
+        <div class="job-meta">
+
+          <span class="number">
+            {String(i + 1).padStart(2, '0')}
+          </span>
+
+          <div class="meta-details">
+
+            {job.rotation && (
+              <div class="meta-item">
+                <span class="meta-label">rotation</span>
+                <strong>{job.rotation}</strong>
+              </div>
+            )}
+
+            <div class="meta-item">
+              <span class="meta-label">period</span>
+              <strong>{job.period}</strong>
+            </div>
+
+            <div class="meta-item">
+              <span class="meta-label">location</span>
+              <strong>{job.place}</strong>
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- MAIN CONTENT -->
+
+        <div class="job-main">
+
+          <h2>
+            {job.title}
+          </h2>
+
+          <a
+            class="company"
+            href={job.website}
+            target="_blank"
+            rel="noreferrer"
+          >
+            {job.company}
+            <span>↗</span>
+          </a>
+
+          <p class="summary">
+            {job.summary}
+          </p>
+
+          <ul>
+            {job.bullets.map((bullet) => (
+              <li>{bullet}</li>
+            ))}
+          </ul>
+
+        </div>
+
+      </article>
+
+    ))}
+
+  </section>
+
+</BaseLayout>
+
+
+<style>
+
+  /* INTRO */
+
+  .intro {
+    padding: 72px 0 90px;
+  }
+
+  .intro .eyebrow {
+    margin: 0 0 16px;
+  }
+
+  .intro .lede {
+    margin: 34px 0 0;
+  }
+
+
+  /* TIMELINE */
+
+  .timeline {
+    border-top: 1px solid var(--line);
+  }
+
+  .job {
+    display: grid;
+    grid-template-columns: 250px minmax(0, 1fr);
+
+    gap: 60px;
+
+    padding: 42px 0 64px;
+
+    border-bottom: 1px solid var(--line);
+  }
+
+
+  /* META */
+
+  .job-meta {
+    display: grid;
+    grid-template-columns: 40px 1fr;
+
+    gap: 12px;
+
+    align-self: start;
+  }
+
+  .number {
+    color: var(--accent);
+
+    font-size: 0.74rem;
+  }
+
+  .meta-details {
+    display: flex;
+    flex-direction: column;
+
+    gap: 18px;
+  }
+
+  .meta-item {
+    display: flex;
+    flex-direction: column;
+
+    gap: 3px;
+  }
+
+  .meta-label {
+    color: var(--muted);
+
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    text-transform: lowercase;
+  }
+
+  .meta-item strong {
+    color: var(--muted);
+
+    font-size: 0.82rem;
+    font-weight: 550;
+    line-height: 1.35;
+  }
+
+  /* MAIN */
+
+  .job-main {
+    max-width: 800px;
+  }
+
+  .job-main h2 {
+    margin: 0;
+
+    font-size: clamp(1.9rem, 3.2vw, 3.2rem);
+    line-height: 1.02;
+    letter-spacing: -0.045em;
+
+    font-weight: 590;
+  }
+
+  .company {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 7px;
+
+    margin-top: 9px;
+
+    color: var(--muted);
+
+    font-size: 1rem;
+
+    transition:
+      color 0.2s ease,
+      gap 0.2s ease;
+  }
+
+  .company:hover {
+    color: var(--text);
+    gap: 11px;
+  }
+
+  .summary {
+    max-width: 740px;
+
+    margin: 26px 0 20px;
+
+    color: #353630;
+
+    font-size: 1.12rem;
+    line-height: 1.6;
+  }
+
+  .job-main ul {
+    max-width: 760px;
+
+    margin: 0;
+    padding-left: 1.2em;
+
+    color: #44453f;
+  }
+
+  .job-main li {
+    margin: 11px 0;
+
+    line-height: 1.6;
+  }
+
+
+  /* MOBILE */
+
+  @media (max-width: 760px) {
+
+    .job {
+      grid-template-columns: 1fr;
+
+      gap: 26px;
+
+      padding: 34px 0 50px;
+    }
+
+  }
+
+</style>

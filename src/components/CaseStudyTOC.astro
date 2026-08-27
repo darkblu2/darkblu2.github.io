@@ -1,0 +1,130 @@
+---
+const { items } = Astro.props;
+---
+
+<nav class="case-toc" aria-label="Case study contents">
+
+  <p class="toc-label">on this page</p>
+
+  <div class="toc-links">
+    {items.map((item) => (
+      <a href={`#${item.id}`}>
+        <span>{item.label}</span>
+      </a>
+    ))}
+  </div>
+
+</nav>
+
+<script>
+  const links = Array.from(
+    document.querySelectorAll<HTMLAnchorElement>('.case-toc a')
+  );
+
+  const sections = links
+    .map((link) => {
+      const id = link.getAttribute('href')?.replace('#', '');
+      return id ? document.getElementById(id) : null;
+    })
+    .filter(Boolean);
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      const visible = entries
+        .filter((entry) => entry.isIntersecting)
+        .sort(
+          (a, b) =>
+            Math.abs(a.boundingClientRect.top) -
+            Math.abs(b.boundingClientRect.top)
+        );
+
+      if (!visible.length) return;
+
+      const activeId = visible[0].target.id;
+
+      links.forEach((link) => {
+        const isActive =
+          link.getAttribute('href') === `#${activeId}`;
+
+        link.classList.toggle('active', isActive);
+      });
+    },
+    {
+      rootMargin: '-100px 0px -65% 0px',
+      threshold: 0,
+    }
+  );
+
+  sections.forEach((section) => {
+    if (section) observer.observe(section);
+  });
+</script>
+
+<style>
+  .case-toc {
+    margin-top: 32px;
+    padding-top: 24px;
+
+    border-top: 1px solid var(--line);
+  }
+
+  .toc-label {
+    margin: 0 0 13px;
+
+    color: var(--muted);
+
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: lowercase;
+  }
+
+  .toc-links {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .toc-links a {
+    position: relative;
+
+    padding: 7px 0 7px 13px;
+
+    color: var(--muted);
+
+    font-size: 0.82rem;
+    line-height: 1.3;
+
+    border-left: 1px solid var(--line);
+
+    transition:
+      color 0.15s ease,
+      border-color 0.15s ease;
+  }
+
+  .toc-links a:hover {
+    color: var(--text);
+  }
+
+  .toc-links a.active {
+    color: var(--text);
+    border-left-color: var(--accent);
+  }
+
+  .toc-links a.active::before {
+    content: '';
+
+    position: absolute;
+    left: -1px;
+    top: 0;
+    bottom: 0;
+
+    width: 2px;
+
+    background: var(--accent);
+  }
+
+  @media (max-width: 760px) {
+    .case-toc {
+      display: none;
+    }
+  }
+</style>

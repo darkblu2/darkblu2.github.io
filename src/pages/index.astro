@@ -1,0 +1,622 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import { current, profile, projects, researchNotes, skills } from '../data/site';
+
+const featured = projects.filter((p) => p.featured);
+---
+
+<BaseLayout
+  title={`${profile.name} — Computer Engineering`}
+  description={profile.intro}
+>
+
+  <section class="hero shell">
+
+    <div class="hero-top">
+      <p class="eyebrow">
+        {profile.role} · {profile.school}
+      </p>
+
+      <p class="status">
+        ● {profile.availability}
+      </p>
+    </div>
+
+
+    <h1 class="display">
+      {profile.hero}
+    </h1>
+
+
+    <div class="hero-bottom">
+
+      <p class="lede">
+        {profile.intro}
+      </p>
+
+      <div class="hero-actions">
+        <a class="text-link" href="/projects">
+          See the work <span>↗</span>
+        </a>
+      </div>
+
+    </div>
+
+  </section>
+
+<!-- CURRENTLY -->
+
+  <section class="section shell rule">
+
+    <div class="split">
+
+      <div>
+        <p class="eyebrow">
+          currently
+        </p>
+
+        <h2 class="h2">
+          What I am working on now.
+        </h2>
+      </div>
+
+
+      <ol class="current-list">
+
+        {current.map((item, i) => (
+
+          <li>
+
+            <span>
+              0{i + 1}
+            </span>
+
+            <p>
+              {item}
+            </p>
+
+          </li>
+
+        ))}
+
+      </ol>
+
+    </div>
+
+  </section>
+  
+  <!-- FEATURED WORK -->
+
+  <section class="section shell rule">
+
+    <SectionHeading
+      eyebrow="featured work"
+      title="Things I am building to understand systems better."
+      link="/projects"
+      linkLabel="All projects"
+    />
+
+    <div class="project-stack">
+
+      {featured.map((project, i) => (
+
+        <ProjectCard
+          project={{
+            ...project,
+            number: String(i + 1).padStart(2, '0'),
+          }}
+        />
+
+      ))}
+
+    </div>
+
+  </section>
+
+  <!-- RESEARCH -->
+
+  <section class="section shell rule">
+
+    <SectionHeading
+      eyebrow="research notebook"
+      title="Questions I am trying to make less fuzzy."
+      link="/research"
+      linkLabel="Open notebook"
+    />
+
+
+    <div class="note-grid">
+
+      {researchNotes.slice(0, 2).map((note) => (
+
+        <a
+          class="note"
+          href="/research"
+        >
+
+          <div class="note-meta">
+
+            <span>
+              {note.type}
+            </span>
+
+            <span>
+              {note.date}
+            </span>
+
+          </div>
+
+
+          <h3>
+            {note.title}
+          </h3>
+
+
+          <p>
+            {note.thought}
+          </p>
+
+
+          <span class="arrow">
+            ↗
+          </span>
+
+        </a>
+
+      ))}
+
+    </div>
+
+  </section>
+
+
+  <!-- SKILLS -->
+
+  <section class="section shell rule">
+
+    <SectionHeading
+      eyebrow="what I use"
+    />
+
+
+    <div class="skill-grid">
+
+      {Object.entries(skills).map(([group, items], i) => (
+
+        <div class="skill-group">
+
+          <span class="num">
+            0{i + 1}
+          </span>
+
+          <h3>
+            {group}
+          </h3>
+
+          <p>
+            {items.join(' · ')}
+          </p>
+
+        </div>
+
+      ))}
+
+    </div>
+
+  </section>
+
+</BaseLayout>
+
+
+<style>
+
+  /* =====================================================
+     HERO
+     ===================================================== */
+
+  .hero {
+    padding: 70px 0 108px;
+  }
+
+
+  /*
+   * FULL DESKTOP
+   *
+   * Slightly wider heading while keeping the text
+   * smaller than the original oversized version.
+   */
+
+  .display {
+    width: 100%;
+    max-width: 1280px;
+
+    margin: 0;
+
+    font-size: clamp(3.1rem, 4.7vw, 5.7rem);
+    line-height: 0.96;
+
+    letter-spacing: -0.055em;
+  }
+
+
+  .hero-top,
+  .hero-bottom {
+    display: flex;
+
+    justify-content: space-between;
+    align-items: flex-start;
+
+    gap: 28px;
+  }
+
+
+  .hero-top {
+    margin-bottom: 50px;
+  }
+
+
+  .hero-top p {
+    margin: 0;
+  }
+
+
+  .status {
+    max-width: 430px;
+
+    color: var(--muted);
+
+    font-size: .82rem;
+
+    text-align: right;
+  }
+
+
+  .status::first-letter {
+    color: var(--accent);
+  }
+
+
+  .hero-bottom {
+    margin-top: 36px;
+  }
+
+
+  .hero-bottom .lede {
+    margin: 0;
+  }
+
+
+  .hero-actions {
+    display: flex;
+
+    gap: 22px;
+
+    padding-top: 8px;
+
+    white-space: nowrap;
+  }
+
+
+  .muted-link {
+    border-color: var(--line);
+  }
+
+
+
+  /* =====================================================
+     FEATURED PROJECTS
+     ===================================================== */
+
+  .project-stack {
+    display: grid;
+
+    gap: 78px;
+  }
+
+
+
+  /* =====================================================
+     CURRENTLY
+     ===================================================== */
+
+  .split {
+    display: grid;
+
+    grid-template-columns: 1fr 1.2fr;
+
+    gap: 70px;
+  }
+
+
+  .current-list {
+    list-style: none;
+
+    margin: 0;
+    padding: 0;
+  }
+
+
+  .current-list li {
+    display: grid;
+
+    grid-template-columns: 50px 1fr;
+
+    padding: 18px 0 22px;
+
+    border-top: 1px solid var(--line);
+  }
+
+
+  .current-list span {
+    color: var(--muted);
+
+    font-size: .74rem;
+  }
+
+
+  .current-list p {
+    margin: 0;
+
+    font-size: 1.13rem;
+  }
+
+
+
+  /* =====================================================
+     RESEARCH NOTES
+     ===================================================== */
+
+  .note-grid {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 18px;
+  }
+
+
+  .note {
+    position: relative;
+
+    min-height: 300px;
+
+    padding: 24px;
+
+    background: var(--surface);
+
+    transition: transform .25s ease;
+  }
+
+
+  .note:hover {
+    transform: translateY(-4px);
+  }
+
+
+  .note-meta {
+    display: flex;
+
+    justify-content: space-between;
+
+    color: var(--muted);
+
+    font-size: .75rem;
+
+    text-transform: uppercase;
+
+    letter-spacing: .08em;
+  }
+
+
+  .note h3 {
+    max-width: 600px;
+
+    margin: 50px 0 16px;
+
+    font-size: clamp(
+      1.5rem,
+      2.5vw,
+      2.5rem
+    );
+
+    line-height: 1.02;
+
+    letter-spacing: -.04em;
+  }
+
+
+  .note p {
+    max-width: 640px;
+
+    color: #494a45;
+  }
+
+
+  .arrow {
+    position: absolute;
+
+    right: 24px;
+    bottom: 22px;
+  }
+
+
+
+  /* =====================================================
+     SKILLS
+     ===================================================== */
+
+  .skill-grid {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    border-top: 1px solid var(--line);
+  }
+
+
+  .skill-group {
+    display: grid;
+
+    grid-template-columns: 55px 1fr;
+
+    padding: 24px 20px 24px 0;
+
+    border-bottom: 1px solid var(--line);
+  }
+
+
+  .skill-group:nth-child(odd) {
+    border-right: 1px solid var(--line);
+  }
+
+
+  .skill-group:nth-child(even) {
+    padding-left: 20px;
+  }
+
+
+  .skill-group .num {
+    color: var(--muted);
+
+    font-size: .75rem;
+  }
+
+
+  .skill-group h3 {
+    margin: 0 0 8px;
+
+    font-size: 1.15rem;
+  }
+
+
+  .skill-group p {
+    grid-column: 2;
+
+    margin: 0;
+
+    color: var(--muted);
+  }
+
+
+
+  /* =====================================================
+     HALF-SCREEN / SMALL LAPTOP / TABLET
+     ===================================================== */
+
+  @media (min-width: 761px) and (max-width: 1100px) {
+
+    .hero {
+      padding: 62px 0 90px;
+    }
+
+
+    /*
+     * This is intentionally a little larger than the
+     * desktop scaling would otherwise make it.
+     */
+
+    .display {
+      max-width: 100%;
+
+      font-size: clamp(
+        3.6rem,
+        7vw,
+        4.9rem
+      );
+
+      line-height: 0.97;
+    }
+
+
+    .hero-top {
+      margin-bottom: 42px;
+    }
+
+
+    .hero-bottom {
+      margin-top: 34px;
+    }
+
+  }
+
+
+
+  /* =====================================================
+     MOBILE
+     ===================================================== */
+
+  @media (max-width: 760px) {
+
+    .hero {
+      padding: 48px 0 72px;
+    }
+
+
+    .display {
+      max-width: 100%;
+
+      font-size: clamp(
+        3.15rem,
+        12vw,
+        4.4rem
+      );
+
+      line-height: 0.98;
+
+      letter-spacing: -0.05em;
+    }
+
+
+    .hero-top,
+    .hero-bottom {
+      flex-direction: column;
+    }
+
+
+    .hero-top {
+      margin-bottom: 38px;
+    }
+
+
+    .status {
+      text-align: left;
+    }
+
+
+    .hero-bottom {
+      margin-top: 32px;
+    }
+
+
+    .hero-actions {
+      flex-wrap: wrap;
+    }
+
+
+    .split {
+      grid-template-columns: 1fr;
+
+      gap: 38px;
+    }
+
+
+    .note-grid,
+    .skill-grid {
+      grid-template-columns: 1fr;
+    }
+
+
+    .skill-group:nth-child(odd) {
+      border-right: 0;
+    }
+
+
+    .skill-group:nth-child(even) {
+      padding-left: 0;
+    }
+
+  }
+
+</style>

@@ -1,0 +1,245 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { current, profile, skills } from '../data/site';
+---
+
+<BaseLayout title={`About — ${profile.name}`}>
+  <section class="shell intro">
+    <p class="eyebrow">about</p>
+
+    <div class="facts">
+      <div>
+        <span>School</span>
+        <strong>{profile.school}</strong>
+      </div>
+
+      <div>
+        <span>Major</span>
+        <strong>{profile.role}</strong>
+      </div>
+
+      <div>
+        <span>Threads / Concentrations</span>
+        <strong>{profile.threads}</strong>
+      </div>
+
+      <div>
+        <span>Interests</span>
+        <strong>{profile.interests}</strong>
+      </div>
+    </div>
+  </section>
+
+  <section class="shell about-grid">
+      <div class="portrait">
+        <img
+          src="/images/portrait.jpg"
+          alt="Portrait"
+        />
+      </div>
+
+    <div class="copy">
+      <h1 class="h1">
+        I’m finishing up my Computer Engineering degree at Georgia Tech in May 2027.
+      </h1>
+
+      <p>
+        Right now that means computer architecture projects, digital design,
+        and reading about photonic and optoelectronic computing. This site is a
+        record of what I can build, but also of what I am still trying to
+        understand.
+      </p>
+    </div>
+  </section>
+
+  <section class="section shell rule personal">
+      <p class="eyebrow">why computer engineering</p>
+
+      <div class="personal-copy">
+        <p>
+          I’ve always enjoyed math, science, and problems that can be worked through
+          logically. Computer Engineering stood out to me because it lets me take
+          that kind of thinking and use it to build things, from software and
+          simulations to embedded systems and hardware.
+        </p>
+      </div>
+    </section>
+    <section class="section shell rule personal">
+    <p class="eyebrow">a bit about me</p>
+
+    <div class="personal-copy">
+      <p>
+        I’m originally from New Delhi, India and grew up in Limassol, Cyprus.
+        I grew up speaking Hindi and English while also learning Greek and French.
+        Outside of engineering, I enjoy art, gaming, and finding a new
+        TV show to binge. 
+      </p>
+    </div>
+  </section>
+
+  <section class="section shell rule personal">
+    <p class="eyebrow">looking ahead</p>
+
+    <div class="personal-copy">
+      <p>
+        After finishing my degree, I plan to continue into graduate study and
+        spend more time working on the areas I’ve become interested in through
+        my projects and coursework. Long term, I’d like to build a career that
+        gives me the chance to keep learning, growing, and taking on new challenges.
+      </p>
+    </div>
+  </section>
+
+</BaseLayout>
+
+<style>
+  .intro {
+    padding: 72px 0 50px;
+  }
+
+  .personal {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 50px;
+  }
+
+  .personal-copy {
+    max-width: 800px;
+  }
+
+  .personal-copy p {
+    font-size: 1.15rem;
+    line-height: 1.65;
+    color: #3d3e39;
+    margin: 0 0 18px;
+  }
+
+  .facts {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 28px 40px;
+    border-top: 1px solid var(--line);
+    padding-top: 18px;
+  }
+
+  .facts div {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+
+  .facts span {
+    font-size: 0.76rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .facts strong {
+    font-weight: 520;
+  }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 0.65fr 1.35fr;
+    gap: 55px;
+    padding: 50px 0 100px;
+  }
+
+  .portrait-placeholder {
+    aspect-ratio: 4/5;
+    background: var(--surface);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 20px;
+    color: var(--muted);
+  }
+
+  .portrait-placeholder small {
+    margin-top: 8px;
+  }
+
+  .copy p {
+    font-size: 1.15rem;
+    max-width: 780px;
+    color: #3d3e39;
+  }
+
+  .personal {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 50px;
+  }
+
+  .personal-copy {
+    max-width: 800px;
+  }
+
+  .personal-copy p {
+    font-size: 1.15rem;
+    line-height: 1.65;
+    color: #3d3e39;
+    margin-top: 0;
+    margin-bottom: 18px;
+  }
+
+  .now-list {
+    max-width: 800px;
+    margin-left: auto;
+  }
+
+  .now-list p {
+    font-size: 1.22rem;
+    border-top: 1px solid var(--line);
+    padding: 16px 0;
+    margin: 0;
+  }
+
+  .tool-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .tool-grid div {
+    padding: 24px 20px 24px 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .tool-grid div:nth-child(even) {
+    padding-left: 20px;
+    border-left: 1px solid var(--line);
+  }
+
+  .tool-grid h2 {
+    font-size: 1.2rem;
+    margin: 0 0 8px;
+  }
+
+  .tool-grid p {
+    color: var(--muted);
+    margin: 0;
+  }
+
+  @media (max-width: 760px) {
+    .facts,
+    .about-grid,
+    .tool-grid,
+    .personal {
+      grid-template-columns: 1fr;
+    }
+
+    .about-grid {
+      gap: 28px;
+    }
+
+    .personal {
+      gap: 20px;
+    }
+
+    .tool-grid div:nth-child(even) {
+      padding-left: 0;
+      border-left: 0;
+    }
+  }
+</style>

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000">
+<rect width="1600" height="1000" fill="#e6e5df"/>
+<text x="120" y="170" font-family="Arial, sans-serif" font-size="54" fill="#11120f">optical logic / MZI</text>
+<text x="120" y="228" font-family="Arial, sans-serif" font-size="28" fill="#6a6b65">phase → interference → intensity → logic interpretation</text>
+<path d="M160 510h280M440 510c160 0 180-190 340-190h340M440 510c160 0 180 190 340 190h340M1120 320c150 0 170 190 320 190M1120 700c150 0 170-190 320-190" fill="none" stroke="#11120f" stroke-width="16" stroke-linecap="round"/>
+<circle cx="440" cy="510" r="30" fill="#2e42ff"/><circle cx="1120" cy="320" r="22" fill="#11120f"/><circle cx="1120" cy="700" r="22" fill="#11120f"/>
+</svg>

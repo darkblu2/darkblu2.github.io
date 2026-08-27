@@ -1,0 +1,470 @@
+---
+import ProjectCaseLayout from '../../components/ProjectCaseLayout.astro';
+import CaseStudyTOC from '../../components/CaseStudyTOC.astro';
+import { projects } from '../../data/site';
+
+const project = projects.find(
+  (project) => project.slug === 'mzi-interference-explorer'
+);
+
+if (!project) {
+  throw new Error('MZI Interference Explorer project not found');
+}
+
+const toc = [
+  { id: 'overview', label: 'Overview' },
+  { id: 'question', label: 'The Question' },
+  { id: 'device', label: 'The Device' },
+  { id: 'model', label: 'Model' },
+  { id: 'simulation', label: 'Simulation' },
+  { id: 'next', label: 'Next Steps' },
+  { id: 'skills', label: 'Engineering Skills' },
+];
+---
+
+<ProjectCaseLayout
+  title={project.title}
+  description={project.description}
+  number={project.number}
+  year={project.year}
+  status={project.status}
+  tagline={project.tagline}
+  image={project.image}
+  tags={project.tags}
+>
+
+  <!-- SIDEBAR / PAGE INDEX -->
+
+  <div slot="sidebar" class="project-links">
+
+    {project.github && (
+      <a
+        class="text-link"
+        href={project.github}
+        target="_blank"
+        rel="noreferrer"
+      >
+        GitHub <span>↗</span>
+      </a>
+    )}
+
+    <CaseStudyTOC items={toc} />
+
+  </div>
+
+
+  <!-- OVERVIEW -->
+
+  <section id="overview">
+
+    <p class="eyebrow">overview</p>
+
+    <p class="big-copy">
+      A small simulation project for understanding how a
+      Mach–Zehnder interferometer converts differences in optical
+      phase into changes in output intensity.
+    </p>
+
+    <p>
+      I am using the project to build a more physical understanding
+      of interference before moving toward more complicated topics
+      such as photonic modulation and optical logic.
+    </p>
+
+  </section>
+
+
+  <!-- QUESTION -->
+
+  <section id="question">
+
+    <p class="eyebrow">the question</p>
+
+    <h2>
+      How does changing the phase of light in one path control
+      the output of an interferometer?
+    </h2>
+
+    <p>
+      A Mach–Zehnder interferometer splits an optical signal into
+      two paths and later recombines them. The relative phase between
+      those paths determines whether the fields interfere
+      constructively or destructively.
+    </p>
+
+  </section>
+
+
+  <!-- DEVICE -->
+
+  <section id="device">
+
+    <p class="eyebrow">the device</p>
+
+    <h2>Mach–Zehnder interferometer</h2>
+
+    <div class="mzi-flow">
+
+      <div>Input</div>
+
+      <span>→</span>
+
+      <div>50/50 splitter</div>
+
+      <span>→</span>
+
+      <div class="paths">
+        <div>Path 1</div>
+        <div>Path 2 + phase shift φ</div>
+      </div>
+
+      <span>→</span>
+
+      <div>Recombine</div>
+
+      <span>→</span>
+
+      <div>Output</div>
+
+    </div>
+
+    <p>
+      The simulation starts with an idealized device so that I can
+      isolate the effect of phase without immediately introducing
+      fabrication effects, nonlinearities, or device-specific losses.
+    </p>
+
+  </section>
+
+
+  <!-- MODEL -->
+
+  <section id="model">
+
+    <p class="eyebrow">model</p>
+
+    <h2>
+      Following the optical field through the two paths.
+    </h2>
+
+    <p>
+      The input field is divided between two arms. A variable phase
+      shift is applied to one arm, and the fields are then recombined.
+      The resulting output intensity depends on their relative phase.
+    </p>
+
+    <div class="concept-grid">
+
+      <div>
+
+        <p class="eyebrow">φ = 0</p>
+
+        <strong>Constructive interference</strong>
+
+        <p>
+          The fields recombine in phase, producing maximum output
+          intensity.
+        </p>
+
+      </div>
+
+      <div>
+
+        <p class="eyebrow">φ = π</p>
+
+        <strong>Destructive interference</strong>
+
+        <p>
+          The fields recombine out of phase, producing approximately
+          zero output intensity.
+        </p>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- SIMULATION -->
+
+  <section id="simulation">
+
+    <p class="eyebrow">simulation</p>
+
+    <h2>
+      Sweeping phase and observing the output intensity.
+    </h2>
+
+    <p>
+      I vary the relative phase between the two interferometer arms
+      from 0 to 2π and calculate the resulting output intensity.
+      Plotting this response makes the relationship between phase
+      and interference directly visible.
+    </p>
+
+    <figure class="plot">
+
+      <img
+        src="/images/phase_sweep.png"
+        alt="Mach-Zehnder interferometer output intensity as phase is swept from 0 to 2 pi"
+        loading="lazy"
+      />
+
+      <figcaption>
+        Simulated MZI output intensity as the relative phase between
+        the two optical paths is swept from 0 to 2π.
+      </figcaption>
+
+    </figure>
+
+  </section>
+
+
+  <!-- NEXT STEPS -->
+
+  <section id="next">
+
+    <p class="eyebrow">next steps</p>
+
+    <h2>
+      Adding one physical effect at a time.
+    </h2>
+
+    <ul class="learning-list">
+
+      <li>
+        Plot both interferometer output ports.
+      </li>
+
+      <li>
+        Compare ideal and unequal splitting ratios.
+      </li>
+
+      <li>
+        Introduce loss in one optical path.
+      </li>
+
+      <li>
+        Explore the effect of wavelength on phase.
+      </li>
+
+      <li>
+        Investigate how phase-controlled interference can be used
+        for modulation and, eventually, optical logic.
+      </li>
+
+    </ul>
+
+  </section>
+
+
+  <!-- SKILLS -->
+
+  <section id="skills">
+
+    <p class="eyebrow">engineering skills developed</p>
+
+    <ul class="learning-list">
+
+      <li>
+        Modeling optical fields using amplitude and phase rather than
+        treating light only as intensity.
+      </li>
+
+      <li>
+        Connecting interference equations to the behavior of a
+        physical photonic device.
+      </li>
+
+      <li>
+        Implementing a parameterized physical model in Python.
+      </li>
+
+      <li>
+        Using numerical sweeps and plots to analyze device behavior.
+      </li>
+
+      <li>
+        Understanding how device-level physics can eventually support
+        higher-level computing functions.
+      </li>
+
+    </ul>
+
+  </section>
+
+</ProjectCaseLayout>
+
+
+<style>
+
+  section {
+    scroll-margin-top: 110px;
+
+    padding: 0 0 62px;
+    margin: 0 0 62px;
+
+    border-bottom: 1px solid var(--line);
+  }
+
+  section:last-child {
+    margin-bottom: 0;
+    border-bottom: 0;
+  }
+
+  section > .eyebrow {
+    margin: 0 0 18px;
+  }
+
+  section p {
+    max-width: 760px;
+
+    color: #3d3e39;
+
+    font-size: 1.08rem;
+    line-height: 1.65;
+  }
+
+  .big-copy {
+    margin-top: 0;
+
+    color: var(--text);
+
+    font-size: clamp(1.35rem, 2.4vw, 1.9rem);
+    line-height: 1.4;
+  }
+
+  h2 {
+    max-width: 780px;
+
+    margin: 0 0 28px;
+
+    font-size: clamp(2rem, 4vw, 4rem);
+    line-height: 1.03;
+    letter-spacing: -0.045em;
+
+    font-weight: 580;
+  }
+
+
+  /* SIDEBAR */
+
+  .project-links {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    gap: 14px;
+  }
+
+
+  /* MZI FLOW */
+
+  .mzi-flow {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+
+    gap: 10px;
+
+    margin: 32px 0;
+  }
+
+  .mzi-flow > div {
+    padding: 16px 18px;
+
+    background: var(--surface);
+    border: 1px solid var(--line);
+  }
+
+  .mzi-flow span {
+    color: var(--muted);
+  }
+
+  .mzi-flow .paths {
+    display: grid;
+
+    gap: 8px;
+  }
+
+  .mzi-flow .paths div {
+    padding: 8px 12px;
+
+    border: 1px solid var(--line);
+  }
+
+
+  /* CONCEPTS */
+
+  .concept-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    gap: 12px;
+
+    margin-top: 30px;
+  }
+
+  .concept-grid > div {
+    padding: 22px;
+
+    background: var(--surface);
+    border: 1px solid var(--line);
+  }
+
+  .concept-grid p {
+    font-size: 0.94rem;
+  }
+
+
+  /* PHASE SWEEP */
+
+  .plot {
+    margin: 36px 0 0;
+  }
+
+  .plot img {
+    width: 100%;
+
+    background: var(--surface);
+    border: 1px solid var(--line);
+
+    object-fit: contain;
+  }
+
+  .plot figcaption {
+    margin-top: 12px;
+
+    color: var(--muted);
+
+    font-size: 0.82rem;
+    line-height: 1.5;
+  }
+
+
+  /* LIST */
+
+  .learning-list {
+    padding-left: 1.2em;
+  }
+
+  .learning-list li {
+    margin-bottom: 14px;
+
+    color: #3d3e39;
+
+    font-size: 1.08rem;
+    line-height: 1.6;
+  }
+
+
+  @media (max-width: 760px) {
+
+    .concept-grid {
+      grid-template-columns: 1fr;
+    }
+
+  }
+
+</style>

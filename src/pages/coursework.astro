@@ -1,0 +1,191 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { profile, coursework } from '../data/site';
+---
+
+<BaseLayout title={`Coursework — ${profile.name}`}>
+  <section class="shell intro">
+    <p class="eyebrow">coursework</p>
+
+    <h1 class="h1">
+      Classes shaping how I think about hardware, computation, and physical systems.
+    </h1>
+
+    <p class="lede">
+      A selection of coursework most relevant to the systems, architecture,
+      signals, and emerging-computing problems I am interested in.
+    </p>
+  </section>
+
+  <section class="shell coursework">
+    {coursework.map((group, groupIndex) => (
+      <section id={`coursework-${groupIndex + 1}`} class="course-group">
+        <div class="group-meta">
+          <span>0{groupIndex + 1}</span>
+          <h2>{group.area}</h2>
+        </div>
+
+        <div class="course-list">
+          {group.courses.map((course) => (
+            <article class="course">
+              <div class="course-heading">
+                <span class="course-code">{course.code}</span>
+                <h3>{course.name}</h3>
+              </div>
+
+              <p>{course.description}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+    ))}
+  </section>
+</BaseLayout>
+
+<style>
+  .intro {
+    padding: 72px 0 72px;
+  }
+
+  .intro .eyebrow {
+    margin: 0 0 16px;
+  }
+
+  .intro .lede {
+    margin: 30px 0 0;
+  }
+
+  .coursework {
+    border-top: 1px solid var(--line);
+  }
+
+  .course-group {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 44px;
+
+    padding: 32px 0 48px;
+
+    border-bottom: 1px solid var(--line);
+  }
+
+  .group-meta {
+    display: grid;
+    grid-template-columns: 34px 1fr;
+    gap: 8px;
+
+    align-content: start;
+  }
+
+  .group-meta > span {
+    padding-top: 3px;
+
+    color: var(--accent);
+    font-size: 0.7rem;
+  }
+
+  .group-meta h2 {
+    margin: 0;
+
+    font-size: 1.25rem;
+    line-height: 1.35;
+    font-weight: 540;
+
+    color: var(--text);
+  }
+
+  .course-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .course {
+    padding: 16px 0;
+    margin: 0;
+
+    border-bottom: 1px solid var(--line);
+  }
+
+  .course:first-child {
+    padding-top: 0;
+  }
+
+  .course:last-child {
+    padding-bottom: 0;
+    border-bottom: 0;
+  }
+
+  .course-heading {
+    display: grid;
+    grid-template-columns: 92px 1fr;
+    gap: 18px;
+
+    align-items: baseline;
+
+    margin-bottom: 6px;
+  }
+
+  .course-code {
+    color: var(--accent);
+
+    font-size: 0.75rem;
+    font-weight: 650;
+    letter-spacing: 0.04em;
+
+    white-space: nowrap;
+  }
+
+  .course h3 {
+    margin: 0;
+
+    font-size: clamp(1.05rem, 1.5vw, 1.3rem);
+    line-height: 1.2;
+    letter-spacing: -0.018em;
+    font-weight: 560;
+
+    color: var(--text);
+  }
+
+  .course p {
+    max-width: 760px;
+
+    margin: 4px 0 0 110px;
+
+    color: var(--muted);
+
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+
+  @media (max-width: 760px) {
+    .intro {
+      padding: 58px 0 58px;
+    }
+
+    .course-group {
+      grid-template-columns: 1fr;
+      gap: 24px;
+
+      padding: 28px 0 40px;
+    }
+
+    .group-meta {
+      grid-template-columns: 30px 1fr;
+    }
+
+    .course {
+      padding: 15px 0;
+    }
+
+    .course-heading {
+      grid-template-columns: 1fr;
+      gap: 3px;
+
+      margin-bottom: 7px;
+    }
+
+    .course p {
+      margin-left: 0;
+    }
+  }
+</style>
