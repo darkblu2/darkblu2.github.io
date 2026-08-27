@@ -265,7 +265,7 @@ export const experience = [
     bullets: [
       'Created a live serial console using SPI between a TI development board and a BeaglePlay Linux board to evaluate transmission speed and communication behavior.',
 
-      'Designed and implemented a PC-based Python automation system for liquid-property testing using RS-232 communication, a Numato relay, and a solenoid valve, improving test efficiency by more than 50%.',
+      'Designed and implemented a PC-based Python automation system for liquid-property testing using SBI/RS-232 communication, a Numato relay, and a solenoid valve, improving test efficiency by more than 50%.',
 
       'Troubleshot timer-circuit boxes and implemented electrical improvements and fixes improving equipment reliability.',
     ],
