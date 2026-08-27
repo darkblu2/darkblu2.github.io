@@ -13,7 +13,7 @@ export const profile = {
   linkedin: 'https://www.linkedin.com/in/himanshi-tandon/',
   hero: 'I build and study computing systems from the hardware up.',
   intro:
-    'I’m a Computer Engineering student focused on computer architecture, embedded systems, and photonics. This site highlights my engineering projects, industry experience, and research interests across hardware and emerging computing systems.',
+    'I’m a Computer Engineering student focused on computer architecture, embedded systems, and hardware. This site highlights my engineering projects, industry experience, and research interests across hardware and emerging computing systems.',
 };
 
 export type Project = {
