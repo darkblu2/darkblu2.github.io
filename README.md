@@ -1,5 +1,7 @@
 # himanshi-portfolio
 
+**Website** - `https://darkblu2.github.io/`
+
 Astro portfolio starter inspired by the project-first clarity and numbered navigation of Sunny Patel's portfolio, adapted for computer engineering, hardware, photonics, research notes, and a résumé preview.
 
 ## Run it
