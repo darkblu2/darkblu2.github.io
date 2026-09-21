@@ -421,7 +421,7 @@ export const skills = {
 };
 
 export const current = [
-  'Completed onboarding (a multi-cycle RV32I processor in C++) and now am a memeber of SiliconJackets',
+  'Completed onboarding (a multi-cycle RV32I processor in C++) and now am a member of SiliconJackets',
   'Extending my MZI Interference Explorer while reading about optical logic and photonic computing.',
   'Onboarding for Nanotechnology & Photonics Society (FabuBlox fabrication process flow of CMOS inverter)'
 ];
