@@ -421,8 +421,9 @@ export const skills = {
 };
 
 export const current = [
-  'Adding new projects and refining the case studies on this portfolio.',
+  'Completed onboarding (a multi-cycle RV32I processor in C++) and now am a memeber of SiliconJackets',
   'Extending my MZI Interference Explorer while reading about optical logic and photonic computing.',
+  'Onboarding for Nanotechnology & Photonics Society (FabuBlox fabrication process flow of CMOS inverter)'
 ];
 
 export const coursework = [
